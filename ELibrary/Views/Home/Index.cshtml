@@ -2,105 +2,130 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Bring in libraries from NuGet and npm, and automate tasks using Grunt or Gulp.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
+
+<section class="welcome-area">
+    <!-- Welcome Slides -->
+    <div class="welcome-slides owl-carousel">
+        <!-- Single Welcome Slide -->
+        <div class="welcome-welcome-slide bg-img bg-gradient-overlay jarallax" style="background-image: url('~/images/bg-img/1.jpg');">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-12">
+                        <!-- Welcome Text -->
+                        <div class="welcome-text text-center">
+                            <h2 data-animation="fadeInUp" data-delay="100ms">We Believe Everyone Should Have Easy Access To Great Dental Care</h2>
+                            <p data-animation="fadeInUp" data-delay="300ms">
+                                Вселената - някои я наричат Библиотеката. - Хорхе Луис Борхес
+                            </p>
+                            <div class="welcome-btn-group">
+                                <button type="button" class="btn dento-btn mx-2" data-toggle="modal" data-target="#registrationModal">
+                                    Регистрация
+                                </button>
+                                <button type="button" class="btn dento-btn mx-2" data-toggle="modal" data-target="#loginModal">
+                                    Вход
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+</section>
+<div class="container">
+    <!--<form action="#" method="post">
+
+         <div class="form-group row">
+             <span asp-validation-for="SingIn.UserNameSingIn" class="text-danger row"></span>
+
+             <label asp-for="SingIn.UserNameSingIn" class="control-label col-md-4">Потребителко име</label>
+             <input asp-for="SingIn.UserNameSingIn" class="form-control col-md-7" />
+         </div>
+         <div class="form-group row">
+             <span asp-validation-for="SingIn.PasswordSingIn" class="text-danger row"></span>
+
+             <label asp-for="SingIn.PasswordSingIn" class="control-label col-md-4">Парола</label>
+             <input asp-for="SingIn.PasswordSingIn" class="form-control col-md-7" />
+         </div>
+         <div class="form-group">
+             <input type="submit" value="Влез" class="btn btn-default" />
+         </div>
+     </form>-->
+</div>
+<!-- ***** Welcome Area End ***** -->
+<!--
+<div class="container">
+    <form action="#" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <span asp-validation-for="SingIn.UserNameSingIn" class="text-danger row"></span>
+            <label asp-for="SingIn.UserNameSingIn" class="control-label col-md-4">Потребителко име</label>
+            <input asp-for="SingIn.UserNameSingIn" class="form-control col-md-7" />
+        </div>
+        <div class="form-group row">
+            <span asp-validation-for="SingIn.PasswordSingIn" class="text-danger row"></span>
+            <label asp-for="SingIn.PasswordSingIn" class="control-label col-md-4">Парола</label>
+            <input asp-for="SingIn.PasswordSingIn" class="form-control col-md-7" />
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Влез" class="btn dento-btn booking-btn" />
+        </div>
+    </form>
+</div>-->
+<div class="container">
+    <!-- ***** Welcome Area Start ***** -->
+    <!--
+    <div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="myModal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModal-label">Регистриране</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <form action="#" method="post">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span asp-validation-for="SingUp.UserNameSingUp" class="text-danger row"></span>
+                                <span asp-validation-for="SingUp.PasswordSingUp" class="text-danger row"></span>
+                                <span asp-validation-for="SingUp.ConfrimPasswordSingUp" class="text-danger row"></span>
+                                <span asp-validation-for="SingUp.EmailSingUp" class="text-danger row"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group row">
+                                    <label asp-for="SingUp.UserNameSingUp" class="control-label col-md-4">Потребителко име</label>
+                                    <input asp-for="SingUp.UserNameSingUp" class="form-control col-md-7" />
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="SingUp.PasswordSingUp" class="control-label col-md-4">Парола</label>
+                                    <input asp-for="SingUp.PasswordSingUp" class="form-control col-md-7" />
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="SingUp.ConfrimPasswordSingUp" class="control-label col-md-4">Потвърди парола</label>
+                                    <input asp-for="SingUp.ConfrimPasswordSingUp" class="form-control col-md-7" />
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="SingUp.EmailSingUp" class="control-label col-md-4">Email адрес</label>
+                                    <input asp-for="SingUp.EmailSingUp" class="form-control col-md-7" />
+                                </div>
+                                <div class="form-group ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Регистрирай се" class="btn dento-btn booking-btn" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>-->
 </div>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
-</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
