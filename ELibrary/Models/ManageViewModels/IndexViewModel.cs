@@ -21,5 +21,6 @@ namespace ELibrary.Models.ManageViewModels
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }
+        public object RegisterViewModel { get; internal set; }
     }
 }

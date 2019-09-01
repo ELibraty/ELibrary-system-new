@@ -14,6 +14,7 @@ namespace ELibrary.Models
             this.CreatedOn = DateTime.UtcNow;
             this.AddedBooks = new List<Book>();
             this.GettedBooks = new List<Book>();
+            this.Avatar = "";
         }
 
         public virtual string Avatar { get; set; }

@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using ELibrary.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -49,10 +54,29 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul id="nav">
-                                    <li><a asp-area="" asp-controller="Home" asp-action="IndexORG">Начало</a></li>
                                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Начало</a></li>
                                 </ul>
-                                @await Html.PartialAsync("_LoginPartial")
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+                                        <ul class="nav navbar-nav navbar-right">
+                                            <li>
+                                                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                                            </li>
+                                            <li>
+                                                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+                                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+                                    </ul>
+                                }
+
 
                             </div>
                             <!-- Nav End -->
