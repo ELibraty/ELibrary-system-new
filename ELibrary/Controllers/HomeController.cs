@@ -27,7 +27,7 @@ namespace ELibrary.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        public AplicationDbContext context { get; set; }
+        public ApplicationDbContext context { get; set; }
 
 
         public HomeController(
@@ -35,17 +35,13 @@ namespace ELibrary.Controllers
            SignInManager<ApplicationUser> signInManager,
            IEmailSender emailSender,
            ILogger<AccountController> logger,
-           AplicationDbContext context)
+           ApplicationDbContext context)
         {
-            
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
-            
             this.context = context;
-
-
         }
 
         [HttpGet]
@@ -75,10 +71,11 @@ namespace ELibrary.Controllers
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");
-                        
-                        //ApplicationUser user= _context.
-                       // ViewBag.Username = $"{_user.FirstName} {_user.Surname}";
-                        return RedirectToLocal(returnUrl);
+                        var user = this.context.Users.FirstOrDefault(x=> x.Email== loginModel.Email);
+                        ViewBag.UserType = $"{user.Type}";
+                        return RedirectToAction(nameof(UserAccountController.About), "UserAccount");
+
+                        //return RedirectToAction("About", "UserAccountController");
                     }
                     if (result.RequiresTwoFactor)
                     {
@@ -202,12 +199,7 @@ namespace ELibrary.Controllers
             return View();
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
+       
 
         public IActionResult Contact()
         {
@@ -234,13 +226,15 @@ namespace ELibrary.Controllers
 
         private IActionResult RedirectToLocal(string returnUrl)
         {
+            //return RedirectToAction(nameof(UserAccountController.About), "About");
+
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.About), "Home");
+                return RedirectToAction(nameof(UserAccountController.About), "UserAccountController");
             }
         }
 
