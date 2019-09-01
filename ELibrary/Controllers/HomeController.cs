@@ -16,6 +16,8 @@ using System.Text;
 using ELibrary.Models.ViewModels;
 using System;
 using ELibrary.Models.AccountViewModels;
+using ELibrary.Data;
+
 
 namespace ELibrary.Controllers
 {
@@ -25,17 +27,25 @@ namespace ELibrary.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        public AplicationDbContext context { get; set; }
+
 
         public HomeController(
            UserManager<ApplicationUser> userManager,
            SignInManager<ApplicationUser> signInManager,
            IEmailSender emailSender,
-           ILogger<AccountController> logger)
+           ILogger<AccountController> logger,
+           AplicationDbContext context)
         {
+            
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            
+            this.context = context;
+
+
         }
 
         [HttpGet]
@@ -57,7 +67,7 @@ namespace ELibrary.Controllers
             {
                 var registerModel = indexModel.RegisterViewModel;
                 var loginModel = indexModel.LoginViewModel;
-                if(loginModel.Email.Length!=0)
+                if(loginModel!=null)
                 {
                     // This doesn't count login failures towards account lockout
                     // To enable password failures to trigger account lockout, set lockoutOnFailure: true
@@ -65,6 +75,9 @@ namespace ELibrary.Controllers
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");
+                        
+                        //ApplicationUser user= _context.
+                       // ViewBag.Username = $"{_user.FirstName} {_user.Surname}";
                         return RedirectToLocal(returnUrl);
                     }
                     if (result.RequiresTwoFactor)
