@@ -17,7 +17,7 @@ using ELibrary.Models.ViewModels;
 using System;
 using ELibrary.Models.AccountViewModels;
 using ELibrary.Data;
-
+using Microsoft.AspNetCore.Http;
 
 namespace ELibrary.Controllers
 {
@@ -72,7 +72,8 @@ namespace ELibrary.Controllers
                     {
                         _logger.LogInformation("User logged in.");
                         var user = this.context.Users.FirstOrDefault(x=> x.Email== loginModel.Email);
-                        ViewBag.UserType = $"{user.Type}";
+                        //ViewBag.UserType = $"{user.Type}";
+                        HttpContext.Session.SetString("userId", user.Id.ToString());
                         return RedirectToAction(nameof(UserAccountController.About), "UserAccount");
 
                         //return RedirectToAction("About", "UserAccountController");

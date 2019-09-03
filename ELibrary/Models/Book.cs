@@ -20,6 +20,8 @@ namespace ELibrary.Models
 
         public virtual string GenreId { get; set; }
 
+        public virtual string UserId { get; set; }
+
         public virtual Genre Genre { get; set; }
 
         public virtual DateTime CreatedOn { get; set; }

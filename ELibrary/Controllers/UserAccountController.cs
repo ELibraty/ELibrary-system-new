@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace ELibrary.Controllers
     {
         public IActionResult About()
         {
-            //ViewData["Message"] = "Your application description page.";
+            var userId = HttpContext.Session.GetString("userId");
+            ViewData["Message"] = userId;
 
             return View();
         }

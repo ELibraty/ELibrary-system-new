@@ -112,6 +112,8 @@ namespace ELibrary.Migrations
 
                     b.Property<string>("GetBookId");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
@@ -134,7 +136,7 @@ namespace ELibrary.Migrations
 
                     b.Property<DateTime?>("DeletedOn");
 
-                    b.Property<bool>("Name");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 

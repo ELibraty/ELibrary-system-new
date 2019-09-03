@@ -24,7 +24,7 @@ namespace ELibrary.Models
         //
         // Summary:
         //     Gets or sets a flag indicating if the user could be locked out.
-        public virtual bool Name { get; set; }
+        public virtual string Name { get; set; }
 
         public virtual DateTime CreatedOn { get; set; }
 

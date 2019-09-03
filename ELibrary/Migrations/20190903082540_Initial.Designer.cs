@@ -11,7 +11,7 @@ using System;
 namespace ELibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190831125342_Initial")]
+    [Migration("20190903082540_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,6 +113,8 @@ namespace ELibrary.Migrations
 
                     b.Property<string>("GetBookId");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
@@ -135,7 +137,7 @@ namespace ELibrary.Migrations
 
                     b.Property<DateTime?>("DeletedOn");
 
-                    b.Property<bool>("Name");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
