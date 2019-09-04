@@ -28,4 +28,11 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\ViewModels\AdminAccount\" />
+    <Folder Include="Models\ViewModels\UserAccount\" />
+    <Folder Include="Services\AdminAccount\" />
+    <Folder Include="Services\LibraryAccount\" />
+  </ItemGroup>
+
 </Project>

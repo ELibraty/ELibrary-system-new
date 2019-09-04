@@ -23,25 +23,26 @@ namespace ELibrary.Controllers
 {
     public class HomeController : Controller
     {
+
+     
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        public ApplicationDbContext context { get; set; }
+        private ApplicationDbContext _context;
 
 
         public HomeController(
-           UserManager<ApplicationUser> userManager,
-           SignInManager<ApplicationUser> signInManager,
-           IEmailSender emailSender,
-           ILogger<AccountController> logger,
-           ApplicationDbContext context)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IEmailSender emailSender,
+            ILogger<AccountController> logger, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
-            this.context = context;
+            _context = context;
         }
 
         [HttpGet]
@@ -63,42 +64,58 @@ namespace ELibrary.Controllers
             {
                 var registerModel = indexModel.RegisterViewModel;
                 var loginModel = indexModel.LoginViewModel;
-                if(loginModel!=null)
+                if (loginModel != null)
                 {
                     // This doesn't count login failures towards account lockout
                     // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                    var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: false);
-                    if (result.Succeeded)
+                    var userName = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).UserName;
+                    if(userName != null)
                     {
-                        _logger.LogInformation("User logged in.");
-                        var user = this.context.Users.FirstOrDefault(x=> x.Email== loginModel.Email);
-                        //ViewBag.UserType = $"{user.Type}";
-                        HttpContext.Session.SetString("userId", user.Id.ToString());
-                        return RedirectToAction(nameof(UserAccountController.About), "UserAccount");
+                        var result = await _signInManager.PasswordSignInAsync(
+                            userName,
+                            loginModel.Password,
+                            loginModel.RememberMe,
+                            lockoutOnFailure: false);
 
-                        //return RedirectToAction("About", "UserAccountController");
+                       
+                        if (result.Succeeded)
+                        {
+                            //ViewBag.UserType = $"{user.Type}";
+                            _logger.LogInformation("User logged in.");
+                            var userId = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
+                            var type = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
+
+                            RedirectToLocal(userId, type, returnUrl);
+
+
+                        }
+                        if (result.RequiresTwoFactor)
+                        {
+                            return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, loginModel.RememberMe });
+                        }
+                        if (result.IsLockedOut)
+                        {
+                            _logger.LogWarning("User account locked out.");
+                            return RedirectToAction(nameof(Lockout));
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, $"Невалиден Email или парола {result.Succeeded.ToString()} !");
+                            return View(indexModel);
+                        }
                     }
-                    if (result.RequiresTwoFactor)
-                    {
-                        return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, loginModel.RememberMe });
-                    }
-                    if (result.IsLockedOut)
-                    {
-                        _logger.LogWarning("User account locked out.");
-                        return RedirectToAction(nameof(Lockout));
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                        return View(loginModel);
-                    }
+                    ModelState.AddModelError(string.Empty, "Невалиден Email или парола!");
+
+                    return View(indexModel);
+
+
                 }
                 else
                 {
                     var user = new ApplicationUser
                     {
-                        UserName = registerModel.UserName,
                         Email = registerModel.Email,
+                        UserName = registerModel.UserName,
                         Type = "user"
                     };
 
@@ -113,16 +130,20 @@ namespace ELibrary.Controllers
 
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created a new account with password.");
-                        return RedirectToLocal(returnUrl);
+
+                        var userId = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
+                        var type = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
+                        RedirectToLocal(userId, type, returnUrl);
+
                     }
                     AddErrors(result);
                 }
 
-                
+
             }
 
             // If we got this far, something failed, redisplay form
-            return View(indexModel);
+            return View();
         }
 
 
@@ -167,7 +188,9 @@ namespace ELibrary.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation("User with ID {UserId} logged in with 2fa.", user.Id);
-                return RedirectToLocal(returnUrl);
+             
+
+                return RedirectToAction(nameof(UserAccountController.Home), "UserAccount");
             }
             else if (result.IsLockedOut)
             {
@@ -202,13 +225,6 @@ namespace ELibrary.Controllers
 
        
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -224,40 +240,20 @@ namespace ELibrary.Controllers
             }
         }
 
-
-        private IActionResult RedirectToLocal(string returnUrl)
+        private IActionResult RedirectToLocal( string userId,string type, string returnUrl)
         {
-            //return RedirectToAction(nameof(UserAccountController.About), "About");
-
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
             else
             {
-                return RedirectToAction(nameof(UserAccountController.About), "UserAccountController");
+                HttpContext.Session.SetString("userId", userId);
+                if(type=="user")   return RedirectToAction(nameof(UserAccountController.Home), "UserAccount");
+                else if (type == "library") return RedirectToAction(nameof(LibraryAccountController.Home), "LibraryAccount");
+                else return RedirectToAction(nameof(AdminAccountController.Home), "AdminAccount");
+
             }
-        }
-
-        //do pass to MD5
-        static string GetMd5Hash(MD5 md5Hash, string input)
-        {
-
-            // Convert the input string to a byte array and compute the hash.
-            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-            // Create a new Stringbuilder to collect the bytes
-            // and create a string.
-            StringBuilder sBuilder = new StringBuilder();
-
-            // Loop through each byte of the hashed data 
-            // and format each one as a hexadecimal string.
-            for (int i = 0; i < data.Length; i++)
-            {
-                sBuilder.Append(data[i].ToString("x2"));
-            }
-            // Return the hexadecimal string.
-            return sBuilder.ToString();
         }
         #endregion
     }

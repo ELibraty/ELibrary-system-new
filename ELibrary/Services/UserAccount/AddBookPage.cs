@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ELibrary.Services
+namespace ELibrary.Services.UserAccount
 {
     public class AddBookPage : IAddBookPage
     {
-        private ApplicationDbContext context;
+        private ApplicationDbContext context;       
 
         public AddBookPage(ApplicationDbContext context)
         {
@@ -21,12 +21,13 @@ namespace ELibrary.Services
         {
             var genreObj = this.context.Genres.FirstOrDefault(x => x.Name == genre);
 
-            var book = new Book() {
-                BookName= bookName,
-                Author= author,
-                GenreId= genreObj.Id,
-                Genre= genreObj,
-                UserId= user.Id
+            var book = new Book()
+            {
+                BookName = bookName,
+                Author = author,
+                GenreId = genreObj.Id,
+                Genre = genreObj,
+                UserId = user.Id
             };
             this.context.Books.Add(book);
 

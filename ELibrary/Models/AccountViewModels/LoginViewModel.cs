@@ -9,7 +9,6 @@ namespace ELibrary.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
