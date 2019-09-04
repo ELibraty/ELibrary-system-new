@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using ELibrary.Data;
 using ELibrary.Models;
 using ELibrary.Services;
+using ELibrary.Services.Contracts.LibraryAccount;
+
+using ELibrary.Services.UserAccount;
 
 namespace ELibrary
 {
@@ -52,6 +55,8 @@ namespace ELibrary
                 options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time   
             });
             //.UseHttpContextItemsMiddleware();
+
+            services.AddScoped<IAddBookService, AddBookService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
 ﻿using ELibrary.Data;
 using ELibrary.Models;
-using ELibrary.Services.Contracts;
+using ELibrary.Services.Contracts.LibraryAccount;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ELibrary.Services.UserAccount
 {
-    public class AddBookPage : IAddBookPage
+    public class AddBookService : IAddBookService
     {
         private ApplicationDbContext context;       
 
-        public AddBookPage(ApplicationDbContext context)
+        public AddBookService(ApplicationDbContext context)
         {
             this.context = context;
         }

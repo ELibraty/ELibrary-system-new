@@ -76,7 +76,6 @@ namespace ELibrary.Controllers
                             loginModel.Password,
                             loginModel.RememberMe,
                             lockoutOnFailure: false);
-
                        
                         if (result.Succeeded)
                         {
@@ -85,9 +84,7 @@ namespace ELibrary.Controllers
                             var userId = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
                             var type = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
 
-                            RedirectToLocal(userId, type, returnUrl);
-
-
+                            return RedirectToLocal(userId, type, returnUrl);
                         }
                         if (result.RequiresTwoFactor)
                         {
@@ -105,18 +102,17 @@ namespace ELibrary.Controllers
                         }
                     }
                     ModelState.AddModelError(string.Empty, "Невалиден Email или парола!");
-
                     return View(indexModel);
-
-
                 }
                 else
                 {
+                    //asp -for= "RegisterViewModel.Type"
+                    var type = registerModel.Type;
                     var user = new ApplicationUser
                     {
                         Email = registerModel.Email,
                         UserName = registerModel.UserName,
-                        Type = "user"
+                        Type = type
                     };
 
                     var result = await _userManager.CreateAsync(user, registerModel.Password);
@@ -131,20 +127,17 @@ namespace ELibrary.Controllers
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created a new account with password.");
 
-                        var userId = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
-                        var type = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
-                        RedirectToLocal(userId, type, returnUrl);
-
+                        var userId = this._context.Users.FirstOrDefault(x => x.Email == registerModel.Email).Id;
+                        return RedirectToLocal(userId, type, returnUrl);
                     }
                     AddErrors(result);
                 }
-
-
             }
-
             // If we got this far, something failed, redisplay form
             return View();
         }
+
+       
 
 
         [HttpGet]
@@ -165,45 +158,7 @@ namespace ELibrary.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginWith2fa(LoginWith2faViewModel model, bool rememberMe, string returnUrl = null)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var authenticatorCode = model.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
-
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, model.RememberMachine);
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User with ID {UserId} logged in with 2fa.", user.Id);
-             
-
-                return RedirectToAction(nameof(UserAccountController.Home), "UserAccount");
-            }
-            else if (result.IsLockedOut)
-            {
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-                return RedirectToAction(nameof(Lockout));
-            }
-            else
-            {
-                _logger.LogWarning("Invalid authenticator code entered for user with ID {UserId}.", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
-                return View();
-            }
-        }
+               
 
 
         [HttpPost]
@@ -249,10 +204,9 @@ namespace ELibrary.Controllers
             else
             {
                 HttpContext.Session.SetString("userId", userId);
-                if(type=="user")   return RedirectToAction(nameof(UserAccountController.Home), "UserAccount");
+                if(type=="admin") return RedirectToAction(nameof(AdminAccountController.Home), "AdminAccount");
                 else if (type == "library") return RedirectToAction(nameof(LibraryAccountController.Home), "LibraryAccount");
-                else return RedirectToAction(nameof(AdminAccountController.Home), "AdminAccount");
-
+                return RedirectToAction(nameof(UserAccountController.Home), "UserAccount");
             }
         }
         #endregion

@@ -32,6 +32,8 @@
     <Folder Include="Models\ViewModels\AdminAccount\" />
     <Folder Include="Models\ViewModels\UserAccount\" />
     <Folder Include="Services\AdminAccount\" />
+    <Folder Include="Services\Contracts\AdminAccount\" />
+    <Folder Include="Services\Contracts\UserAccount\" />
     <Folder Include="Services\LibraryAccount\" />
   </ItemGroup>
 

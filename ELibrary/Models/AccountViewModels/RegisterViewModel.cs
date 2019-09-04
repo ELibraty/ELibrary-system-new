@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace ELibrary.Models.AccountViewModels
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
         
-        [Display(Name = "Вид потребирел")]
-        public bool Type { get; set; }
+        [BindProperty, Required]
+        public string Type { get; set; }
     }
 }

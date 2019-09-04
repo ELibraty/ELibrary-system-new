@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ELibrary.Services.Contracts
+namespace ELibrary.Services.Contracts.LibraryAccount
 {
-    public interface IAddBookPage
+    public interface IAddBookService
     {
         string CreateBook(string bookName, string author, string genre, ApplicationUser user);
     }
