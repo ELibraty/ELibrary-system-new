@@ -1,19 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ELibrary.Services.Contracts.LibraryAccount;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ELibrary.Models.ViewModels.LibraryAccount.AddBookPageViewModelFolder;
 
 namespace ELibrary.Controllers
 {
     public class LibraryAccountController:Controller
     {
+        private IAddBookService addBookService;
+
+        public LibraryAccountController(
+            IAddBookService addBookService)
+        {
+            this.addBookService = addBookService;
+        }
+
+        [Authorize]
         public IActionResult Home()
         {
-            //var userId = HttpContext.Session.GetString("userId");
-            //ViewData["Message"] = userId;
+            var userId = HttpContext.Session.GetString("userId");
+            ViewData["Message"] = userId;
+            ViewBag.UserType = "libary";
 
             return View();
+        }
+
+        [Authorize]
+        public IActionResult AddBook()
+        {
+            var userId = HttpContext.Session.GetString("userId");
+            ViewData["Message"] = userId;
+            ViewBag.UserType = "libary";
+
+            var allGenres = this.addBookService.GetAllGenres();
+            var viewModel = new AddBookViewModel()
+            {
+                Genres = allGenres,
+            };
+
+
+
+            return View(viewModel);
         }
     }
 }

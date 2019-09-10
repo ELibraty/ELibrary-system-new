@@ -11,6 +11,8 @@ namespace ELibrary.Models.ViewModels.LibraryAccount.AddBookPageViewModelFolder
 
         public string Author { get; set; }
 
-        public List<Genre> Genre { get; set; }
+        public string GenreId { get; set; }
+
+        public List<GenreListViewModel> Genres { get; set; }
     }
 }

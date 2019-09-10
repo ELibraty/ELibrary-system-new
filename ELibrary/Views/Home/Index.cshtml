@@ -40,12 +40,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="LoginViewModel.Email" class="control-label"></label>
-                <input asp-for="LoginViewModel.Email" value="a@abv.bg" class="form-control" />
+                <input asp-for="LoginViewModel.Email" value="library4@abv.bg" class="form-control" />
                 <span asp-validation-for="LoginViewModel.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LoginViewModel.Password" class="control-label"></label>
-                <input asp-for="LoginViewModel.Password" value="user" class="form-control" />
+                <input asp-for="LoginViewModel.Password" value="Password1!" class="form-control" />
                 <span asp-validation-for="LoginViewModel.Password" class="text-danger"></span>
             </div>
 
@@ -81,12 +81,12 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group row">
                             <label asp-for="RegisterViewModel.Email" class="control-label col-md-4"></label>
-                            <input asp-for="RegisterViewModel.Email" value="a@abv.bg" class="form-control col-md-8" />
+                            <input asp-for="RegisterViewModel.Email" value="library@abv.bg" class="form-control col-md-8" />
                             <span asp-validation-for="RegisterViewModel.Email" class="text-danger col-md-12"></span>
                         </div>
                         <div class="form-group row">
                             <label asp-for="RegisterViewModel.UserName" class="control-label col-md-4"></label>
-                            <input asp-for="RegisterViewModel.UserName" value="user" class="form-control col-md-8" />
+                            <input asp-for="RegisterViewModel.UserName" value="library" class="form-control col-md-8" />
                             <span asp-validation-for="RegisterViewModel.UserName" class="text-danger col-md-12"></span>
                         </div>
                         <div class="form-group row">
@@ -103,8 +103,15 @@
                             <div class="control-label col-md-4">Регистрирай ме като:</div>
 
                             <div class="checkbox col-md-8">
-                                <input type="radio" asp-for="RegisterViewModel.Type" name="Type" value="user"/>Потребител
-                                <input type="radio" asp-for="RegisterViewModel.Type" name="Type" value="library" />Библиотека
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="radio" asp-for="RegisterViewModel.Type" value="user" />Потребител
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="radio" asp-for="RegisterViewModel.Type" value="library" />Библиотека
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>

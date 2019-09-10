@@ -50,6 +50,7 @@ namespace ELibrary.Controllers
         public IActionResult Index(string returnUrl = null)
         {
             //ViewData["ReturnUrl"] = returnUrl;
+            ViewBag.UserType = "guest";
             return View();
         }
 
@@ -59,6 +60,8 @@ namespace ELibrary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IndexViewModel indexModel, string returnUrl = null)
         {
+            ViewBag.UserType = "guest";
+
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -79,7 +82,6 @@ namespace ELibrary.Controllers
                        
                         if (result.Succeeded)
                         {
-                            //ViewBag.UserType = $"{user.Type}";
                             _logger.LogInformation("User logged in.");
                             var userId = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
                             var type = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
@@ -97,7 +99,7 @@ namespace ELibrary.Controllers
                         }
                         else
                         {
-                            ModelState.AddModelError(string.Empty, $"Невалиден Email или парола {result.Succeeded.ToString()} !");
+                            ModelState.AddModelError(string.Empty, $"Невалиден Email или парола!");
                             return View(indexModel);
                         }
                     }
@@ -134,7 +136,7 @@ namespace ELibrary.Controllers
                 }
             }
             // If we got this far, something failed, redisplay form
-            return View();
+            return View(indexModel);
         }
 
        
@@ -144,6 +146,7 @@ namespace ELibrary.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
         {
+
             // Ensure the user has gone through the username & password screen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
 
