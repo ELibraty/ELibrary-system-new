@@ -54,7 +54,6 @@ namespace ELibrary.Controllers
 
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IndexViewModel indexModel, string returnUrl = null)
         {

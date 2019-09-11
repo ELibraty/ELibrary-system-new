@@ -39,7 +39,7 @@
                     <nav class="classy-navbar justify-content-between" id="dentoNav">
                         <!-- Logo -->
                         <a class="nav-brand" href="index.html">
-                            <!--<img src="~/img/core-img/logo.png" />-->
+                            <img src="~/img/core-img/logo.png" style="width:85px"/>
                         </a>
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -55,10 +55,10 @@
                             <div class="classynav">
                                 <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
 
-                                    <ul id="nav">
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <ul id="nav">
 
-                                        @if (SignInManager.IsSignedIn(User))
-                                        {
                                             @if (ViewBag.UserType == "libary")
                                             {
                                                 <li><a asp-area="" asp-controller="LibraryAccount" asp-action="AddBook">Добавяна на книга</a></li>
@@ -67,14 +67,25 @@
 
 
 
+
+
                                             <li>
                                                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
                                             </li>
                                             <li>
-                                                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                                                <button type="submit" class="btn btn-link navbar-btn navbar-link">Изход</button>
                                             </li>
-                                        }
-                                    </ul>
+
+                                        </ul>
+
+                                    }
+
+                                    else
+                                    {
+                                        <ul>
+                                            <li><h2 style="color:RGB(161,214,226)">Електронна библиотека</h2></li>
+                                        </ul>
+                                    }
                                 </form>
 
 
@@ -96,70 +107,10 @@
     <footer class="footer-area bg-img bg-gradient-overlay" style="background-image: url('~/images/core-img/logo.png');">
         <div class="container">
             <div class="row">
-                <!-- Single Footer Widget -->
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <div class="single-footer-widget">
-                        <a href="./index.html" class="d-block mb-4"><img src="~/images/core-img/logo.png" alt=""></a>
-                        <p>Etiam sutor risus, dapibus act elefend katen, lacinia sitamet denim. Mauris sagittis kansa interdum dignissim.</p>
-                        <div class="footer-contact">
-                            <p><i class="icon_pin"></i> 28 Jackson Street, Chicago, 7788569 USA</p>
-                            <p><i class="icon_phone"></i> +84. 2252. 2250. 122</p>
-                            <p><i class="icon_mail"></i> info.dento@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Footer Widget -->
-                <div class="col-12 col-sm-6 col-lg">
-                    <div class="single-footer-widget">
-                        <!-- Widget Title -->
-                        <h5 class="widget-title">Opening Hours</h5>
-                        <!-- Opening Hours -->
-                        <ul class="opening-hours">
-                            <li><span>Mon-Wed</span> <span>8.00-18.00</span></li>
-                            <li><span>Thu-Fri</span> <span>8.00-17.00</span></li>
-                            <li><span>Sat</span> <span>9.00-17.00</span></li>
-                            <li><span>Sun</span> <span>10.00-17.00</span></li>
-                            <li><span>Holiday</span> <span>Closed</span></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Single Footer Widget -->
-                <div class="col-12 col-sm-6 col-lg">
-                    <div class="single-footer-widget">
-                        <!-- Widget Title -->
-                        <h5 class="widget-title">Quick Link</h5>
-                        <!-- Quick Links Nav -->
-                        <nav>
-                            <ul class="quick-links">
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">FAQs</a></li>
-                                <li><a href="#">Contact</a></li>
-                                <li><a href="#">Policy</a></li>
-                                <li><a href="#">News</a></li>
-                                <li><a href="#">Advisors</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Dentist</a></li>
-                                <li><a href="#">Services</a></li>
-                                <li><a href="#">Legals</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <!-- Single Footer Widget -->
-                <div class="col-12 col-sm-6 col-lg">
-                    <div class="single-footer-widget">
-                        <!-- Widget Title -->
-                        <h5 class="widget-title">Newsletter</h5>
-                        <!-- Social Info -->
-                        <div class="footer-social-info">
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="Google Plus"><i class="fa fa-google-plus"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="Linkedin"><i class="fa fa-linkedin"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="Pinterest"><i class="fa fa-pinterest"></i></a>
-                        </div>
-                    </div>
-                </div>
+                
+              
+               
+               
             </div>
         </div>
         <!-- Copywrite Area -->
@@ -170,7 +121,7 @@
                         <p>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             Copyright &copy;
-                            <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <script>document.write(new Date().getFullYear());</script> Всички права запазени | Сайтът е разработен от Екатерина и Димитър - Смолян <i class="fa fa-heart-o" aria-hidden="true"></i>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </p>
                     </div>

@@ -50,21 +50,22 @@ namespace ELibrary.Controllers
         {
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
-        
-            bool flagAddBook = false;
 
+            bool flagAddBook = false;
+            
+
+            
 
 
             this.addBookService.CreateBook(bookName, author, genreId, userId);
 
             var allGenres = this.addBookService.GetAllGenres();
+            
             var viewModel = new AddBookViewModel()
             {
                 Genres = allGenres,
             };
-
-
-            return View();
+            return View(viewModel);
         }
 
         [Authorize]
@@ -75,7 +76,6 @@ namespace ELibrary.Controllers
             ViewBag.UserType = "libary";
 
             var model = addBookService.GetAllBooks(userId);
-
             return View();
         }
 

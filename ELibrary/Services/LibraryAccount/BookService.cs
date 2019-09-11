@@ -21,23 +21,29 @@ namespace ELibrary.Services.LibraryAccount
         public string CreateBook(string bookName, string author, string genreId, string userId)
         {
             var genreObj = this.context.Genres.FirstOrDefault(x => x.Id == genreId);
-
-            var book = new Book()
+            var book = this.context.Books.FirstOrDefault(x => x.BookName == bookName&& x.UserId==userId);
+            if(book==null)
             {
-                BookName = bookName,
-                Author = author,
-                GenreId = genreId,
-                Genre = genreObj,
-                UserId = userId
-            };
-            this.context.Books.Add(book);
+                var newBook = new Book()
+                {
+                    BookName = bookName,
+                    Author = author,
+                    GenreId = genreId,
+                    Genre = genreObj,
+                    UserId = userId
+                };
+                this.context.Books.Add(newBook);
 
-            genreObj.Books.Add(book);
-            this.context.Books.Add(book);
+                genreObj.Books.Add(newBook);
+                this.context.Books.Add(newBook);
 
-            this.context.SaveChanges();
+                this.context.SaveChanges();
 
-            return book.Id;
+                return book.Id;
+
+            }
+            return "Книганата същесвува в библиотеката Ви!";
+           
         }
 
         public AllBooksViewModel GetAllBooks(string userId)
