@@ -1,6 +1,6 @@
 ﻿using ELibrary.Data;
 using ELibrary.Models;
-using ELibrary.Models.ViewModels.LibraryAccount.AddBookPageViewModelFolder;
+using ELibrary.Models.ViewModels.LibraryAccount;
 using ELibrary.Services.Contracts.LibraryAccount;
 using System;
 using System.Collections.Generic;
@@ -18,9 +18,9 @@ namespace ELibrary.Services.LibraryAccount
             this.context = context;
         }
 
-        public string CreateBook(string bookName, string author, string genreId, ApplicationUser user)
+        public string CreateBook(string bookName, string author, string genreId, string userId)
         {
-            var genreObj = this.context.Genres.FirstOrDefault(x => x.Name == genreId);
+            var genreObj = this.context.Genres.FirstOrDefault(x => x.Id == genreId);
 
             var book = new Book()
             {
@@ -28,7 +28,7 @@ namespace ELibrary.Services.LibraryAccount
                 Author = author,
                 GenreId = genreId,
                 Genre = genreObj,
-                UserId = user.Id
+                UserId = userId
             };
             this.context.Books.Add(book);
 

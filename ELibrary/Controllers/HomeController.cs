@@ -49,8 +49,6 @@ namespace ELibrary.Controllers
         [AllowAnonymous]
         public IActionResult Index(string returnUrl = null)
         {
-            //ViewData["ReturnUrl"] = returnUrl;
-            ViewBag.UserType = "guest";
             return View();
         }
 

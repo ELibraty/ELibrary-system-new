@@ -1,5 +1,5 @@
 ﻿using ELibrary.Models;
-using ELibrary.Models.ViewModels.LibraryAccount.AddBookPageViewModelFolder;
+using ELibrary.Models.ViewModels.LibraryAccount;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,6 @@ namespace ELibrary.Services.Contracts.LibraryAccount
     {
         List<GenreListViewModel> GetAllGenres();
 
-        string CreateBook(string bookName, string author, string genreId, ApplicationUser user);
+        string CreateBook(string bookName, string author, string genreId, string userId);
     }
 }
