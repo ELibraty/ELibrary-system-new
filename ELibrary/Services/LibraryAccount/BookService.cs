@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace ELibrary.Services.LibraryAccount
 {
-    public class AddBookService: IAddBookService
+    public class BookService: IAddBookService
     {
         private ApplicationDbContext context;
 
-        public AddBookService(ApplicationDbContext context)
+        public BookService(ApplicationDbContext context)
         {
             this.context = context;
         }
@@ -38,6 +38,26 @@ namespace ELibrary.Services.LibraryAccount
             this.context.SaveChanges();
 
             return book.Id;
+        }
+
+        public AllBooksViewModel GetAllBooks(string userId)
+        {
+            var books = context.Books.Where(x=>x.DeletedOn==null&& x.UserId==userId).Select(b => new BookViewModel()
+            {
+                Author = b.Author,
+                BookId = b.Id,
+                BookName = b.BookName,
+                GenreName = b.Genre.Name
+            });
+
+
+            var model = new AllBooksViewModel()
+            {
+                Books = books
+            };
+            return model;
+
+
         }
 
         public List<GenreListViewModel> GetAllGenres()

@@ -12,5 +12,9 @@ namespace ELibrary.Services.Contracts.LibraryAccount
         List<GenreListViewModel> GetAllGenres();
 
         string CreateBook(string bookName, string author, string genreId, string userId);
+
+        AllBooksViewModel GetAllBooks(string userId);
+
+
     }
 }

@@ -67,6 +67,19 @@ namespace ELibrary.Controllers
             return View();
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult AllBooks()
+        {
+            var userId = HttpContext.Session.GetString("userId");
+            ViewBag.UserType = "libary";
+
+            var model = addBookService.GetAllBooks(userId);
+
+            return View();
+        }
+
+
 
     }
 }
