@@ -13,6 +13,9 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
         
         public string GenreName { get; set; }
 
+        public string GenreId { get; set; }
+
+
         public string BookId { get; set; }
     }
 }

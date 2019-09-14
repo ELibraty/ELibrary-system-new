@@ -20,6 +20,7 @@ namespace ELibrary.Controllers
             this.addBookService = addBookService;
         }
 
+        //Home Page
         [Authorize]
         public IActionResult Home()
         {
@@ -29,6 +30,7 @@ namespace ELibrary.Controllers
             return View();
         }
 
+        //AddBook Page - view
         [Authorize]
         [HttpGet]
         public IActionResult AddBook()
@@ -44,23 +46,15 @@ namespace ELibrary.Controllers
             return View(viewModel);
         }
 
+        //AddBook Page - add new book
         [Authorize]
         [HttpPost]
         public IActionResult AddBook(string bookName,string author,string genreId)
         {
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
-
-            bool flagAddBook = false;
-            
-
-            
-
-
-            this.addBookService.CreateBook(bookName, author, genreId, userId);
-
-            var allGenres = this.addBookService.GetAllGenres();
-            
+            ViewData["AddBook"] =  this.addBookService.CreateBook(bookName, author, genreId, userId);
+            var allGenres = this.addBookService.GetAllGenres();            
             var viewModel = new AddBookViewModel()
             {
                 Genres = allGenres,
@@ -68,6 +62,7 @@ namespace ELibrary.Controllers
             return View(viewModel);
         }
 
+        //AllBooks Page - view
         [Authorize]
         [HttpGet]
         public IActionResult AllBooks()
@@ -75,9 +70,26 @@ namespace ELibrary.Controllers
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
 
-            var model = addBookService.GetAllBooks(userId);
-            return View();
+            var model = addBookService.GetAllBooks(userId,"","","");
+            var allGenres = this.addBookService.GetAllGenres();
+            model.Genres = allGenres;
+            return View(model);
         }
+
+        //AllBooks Page - search book
+        [Authorize]
+        [HttpPost]
+        public IActionResult AllBooks(string bookName, string author, string genreId)
+        {
+            var userId = HttpContext.Session.GetString("userId");
+            ViewBag.UserType = "libary";
+
+            var model = addBookService.GetAllBooks(userId,bookName,author,genreId);
+            var allGenres = this.addBookService.GetAllGenres();
+            model.Genres = allGenres;
+            return View(model);
+        }
+
 
 
 

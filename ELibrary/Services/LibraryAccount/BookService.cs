@@ -20,8 +20,16 @@ namespace ELibrary.Services.LibraryAccount
 
         public string CreateBook(string bookName, string author, string genreId, string userId)
         {
-            var genreObj = this.context.Genres.FirstOrDefault(x => x.Id == genreId);
-            var book = this.context.Books.FirstOrDefault(x => x.BookName == bookName&& x.UserId==userId);
+            var genreObj = this.context.Genres.FirstOrDefault(g =>
+                g.Id == genreId
+                && g.DeletedOn==null);
+
+            var book = this.context.Books.FirstOrDefault(b => 
+                b.BookName == bookName
+                && b.Author == author
+                && b.UserId==userId 
+                && b.DeletedOn==null);
+
             if(book==null)
             {
                 var newBook = new Book()
@@ -33,46 +41,75 @@ namespace ELibrary.Services.LibraryAccount
                     UserId = userId
                 };
                 this.context.Books.Add(newBook);
-
                 genreObj.Books.Add(newBook);
                 this.context.Books.Add(newBook);
-
                 this.context.SaveChanges();
-
-                return book.Id;
-
+                return "Успешно добавена книганата!";
             }
-            return "Книганата същесвува в библиотеката Ви!";
-           
+            return "Книганата същесвува в библиотеката Ви!";           
         }
 
-        public AllBooksViewModel GetAllBooks(string userId)
-        {
-            var books = context.Books.Where(x=>x.DeletedOn==null&& x.UserId==userId).Select(b => new BookViewModel()
-            {
-                Author = b.Author,
-                BookId = b.Id,
-                BookName = b.BookName,
-                GenreName = b.Genre.Name
-            });
+       
 
+        public AllBooksViewModel GetAllBooks(string userId, string bookName, string author, string genreId)
+        {
+            var books = context.Books.Where(b =>
+                b.DeletedOn == null
+                && b.UserId == userId
+                && b.BookName.Contains(bookName))
+               // && b.Author.Contains(author))
+                .Select(b => new BookViewModel()
+                {
+                    Author = b.Author,
+                    BookId = b.Id,
+                    BookName = b.BookName,
+                    GenreName = b.Genre.Name,
+                    GenreId= b.GenreId
+                });
+
+           /*
+            if (genreId != "")
+            {
+                books = books.Where(b => b.GenreId==genreId);
+            }*/
 
             var model = new AllBooksViewModel()
             {
-                Books = books
+                Books = books,
+                Author=author,
+                BookName=bookName,
+                GenreId=genreId,                
             };
             return model;
-
-
         }
 
         public List<GenreListViewModel> GetAllGenres()
         {
-            return this.context.Genres.Select(c => new GenreListViewModel()
+            /* var genres = this.context.Genres.OrderBy(g => g.Name).Select(g => new GenreListViewModel()
+             {
+                 Id = g.Id,
+                 Name = g.Name
+             }).Reverse().ToList();*/
+
+            var genres = this.context.Genres.Select(g => new GenreListViewModel()
             {
-                Id =c.Id,
-                Name =c.Name
+                Id = g.Id,
+                Name = g.Name
             }).ToList();
+
+            var ganre = new GenreListViewModel()
+            {
+                Id = "",
+                Name = "Изберете жанр"
+            };
+
+            genres.Add(ganre);    
+            var result= genres.Select(g => new GenreListViewModel()
+            {
+                Id = g.Id,
+                Name = g.Name
+            }).Reverse().ToList();
+            return result;
         }
     }
 }

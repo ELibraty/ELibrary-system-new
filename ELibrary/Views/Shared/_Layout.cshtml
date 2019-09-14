@@ -55,12 +55,13 @@
                             <div class="classynav">
                                 <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
 
-                                    @if (SignInManager.IsSignedIn(User))
-                                    {
+                                    @if (SignInManager.IsSignedIn(User)){
                                         <ul id="nav">
 
                                             @if (ViewBag.UserType == "libary")
                                             {
+                                                <li><a asp-area="" asp-controller="LibraryAccount" asp-action="AllBooks">Всички книги</a></li>
+
                                                 <li><a asp-area="" asp-controller="LibraryAccount" asp-action="AddBook">Добавяна на книга</a></li>
 
                                             }
@@ -69,23 +70,25 @@
 
 
 
-                                            <li>
-                                                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-                                            </li>
-                                            <li>
-                                                <button type="submit" class="btn btn-link navbar-btn navbar-link">Изход</button>
-                                            </li>
+                                        <li>
+                                            <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                                        </li>
+                                        <li>
+                                            <button type="submit" class="btn btn-link navbar-btn navbar-link">Изход</button>
+                                        </li>
+
+
+                                                                                   
 
                                         </ul>
 
-                                    }
-
-                                    else
-                                    {
+                                     }
+                                     else
+                                     {
                                         <ul>
                                             <li><h2 style="color:RGB(161,214,226)">Електронна библиотека</h2></li>
                                         </ul>
-                                    }
+                                     }
                                 </form>
 
 
@@ -105,14 +108,7 @@
 
     <!-- ***** Footer Area Start ***** -->
     <footer class="footer-area bg-img bg-gradient-overlay" style="background-image: url('~/images/core-img/logo.png');">
-        <div class="container">
-            <div class="row">
-                
-              
-               
-               
-            </div>
-        </div>
+       
         <!-- Copywrite Area -->
         <div class="container">
             <div class="row">

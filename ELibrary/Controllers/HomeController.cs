@@ -68,9 +68,10 @@ namespace ELibrary.Controllers
                 {
                     // This doesn't count login failures towards account lockout
                     // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                    var userName = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).UserName;
-                    if(userName != null)
+                    if(this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn==null) != null)
                     {
+                        var userName = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null).UserName;
+
                         var result = await _signInManager.PasswordSignInAsync(
                             userName,
                             loginModel.Password,
@@ -79,7 +80,7 @@ namespace ELibrary.Controllers
                        
                         if (result.Succeeded)
                         {
-                            _logger.LogInformation("User logged in.");
+                            _logger.LogInformation("Успешно влизане!");
                             var userId = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
                             var type = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
 
@@ -105,31 +106,37 @@ namespace ELibrary.Controllers
                 }
                 else
                 {
-                    //asp -for= "RegisterViewModel.Type"
-                    var type = registerModel.Type;
-                    var user = new ApplicationUser
+                    var userChack = this._context.Users.FirstOrDefault(u => u.Email == registerModel.Email);
+                    if(userChack == null)
                     {
-                        Email = registerModel.Email,
-                        UserName = registerModel.UserName,
-                        Type = type
-                    };
+                        var type = registerModel.Type;
+                        var user = new ApplicationUser
+                        {
+                            Email = registerModel.Email,
+                            UserName = registerModel.UserName,
+                            Type = type
+                        };
 
-                    var result = await _userManager.CreateAsync(user, registerModel.Password);
-                    if (result.Succeeded)
-                    {
-                        _logger.LogInformation("User created a new account with password.");
+                        var result = await _userManager.CreateAsync(user, registerModel.Password);
+                        if (result.Succeeded)
+                        {
+                            _logger.LogInformation("Успешно регистриран потребител!");
 
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                        await _emailSender.SendEmailConfirmationAsync(registerModel.Email, callbackUrl);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                            await _emailSender.SendEmailConfirmationAsync(registerModel.Email, callbackUrl);
 
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created a new account with password.");
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            _logger.LogInformation("Успешно регистриран потребител!");
 
-                        var userId = this._context.Users.FirstOrDefault(x => x.Email == registerModel.Email).Id;
-                        return RedirectToLocal(userId, type, returnUrl);
+                            var userId = this._context.Users.FirstOrDefault(x => x.Email == registerModel.Email).Id;
+                            return RedirectToLocal(userId, type, returnUrl);
+                        }
                     }
-                    AddErrors(result);
+                    else
+                    {
+                        ViewData["ReturnUrl"] = "Email адреса е зает!";
+                    }
                 }
             }
             // If we got this far, something failed, redisplay form
