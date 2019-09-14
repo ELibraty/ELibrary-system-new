@@ -55,9 +55,7 @@ namespace ELibrary.Services.LibraryAccount
         {
             var books = context.Books.Where(b =>
                 b.DeletedOn == null
-                && b.UserId == userId
-                && b.BookName.Contains(bookName))
-               // && b.Author.Contains(author))
+                && b.UserId == userId)
                 .Select(b => new BookViewModel()
                 {
                     Author = b.Author,
@@ -67,17 +65,28 @@ namespace ELibrary.Services.LibraryAccount
                     GenreId= b.GenreId
                 });
 
-           /*
-            if (genreId != "")
+            if(bookName!= null)
+            {
+                books = books.Where(b => b.BookName.Contains(bookName));
+            }
+
+            if (author != null)
+            {
+                books = books.Where(b => b.Author.Contains(author));
+            }
+
+            if (genreId != null)
             {
                 books = books.Where(b => b.GenreId==genreId);
-            }*/
+            }
+
+
 
             var model = new AllBooksViewModel()
             {
                 Books = books,
                 Author=author,
-                BookName=bookName,
+                BookName= bookName,
                 GenreId=genreId,                
             };
             return model;

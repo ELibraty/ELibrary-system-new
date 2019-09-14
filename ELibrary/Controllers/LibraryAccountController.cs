@@ -70,7 +70,7 @@ namespace ELibrary.Controllers
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
 
-            var model = addBookService.GetAllBooks(userId,"","","");
+            var model = addBookService.GetAllBooks(userId, null, null, null);
             var allGenres = this.addBookService.GetAllGenres();
             model.Genres = allGenres;
             return View(model);
@@ -84,11 +84,12 @@ namespace ELibrary.Controllers
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
 
-            var model = addBookService.GetAllBooks(userId,bookName,author,genreId);
+            var model = addBookService.GetAllBooks(userId, bookName, author, genreId);
             var allGenres = this.addBookService.GetAllGenres();
             model.Genres = allGenres;
             return View(model);
         }
+
 
 
 
