@@ -24,10 +24,15 @@ namespace ELibrary.Controllers
         [Authorize]
         public IActionResult Home()
         {
+
+            starUp();
+            return View();
+        }
+
+        public void starUp()
+        {
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
-
-            return View();
         }
 
         //AddBook Page - view
@@ -35,8 +40,7 @@ namespace ELibrary.Controllers
         [HttpGet]
         public IActionResult AddBook()
         {
-            var userId = HttpContext.Session.GetString("userId");
-            ViewBag.UserType = "libary";
+            starUp();
 
             var allGenres = this.addBookService.GetAllGenres();
             var viewModel = new AddBookViewModel()
@@ -51,8 +55,10 @@ namespace ELibrary.Controllers
         [HttpPost]
         public IActionResult AddBook(string bookName,string author,string genreId)
         {
+            starUp();
+
             var userId = HttpContext.Session.GetString("userId");
-            ViewBag.UserType = "libary";
+
             ViewData["AddBook"] =  this.addBookService.CreateBook(bookName, author, genreId, userId);
             var allGenres = this.addBookService.GetAllGenres();            
             var viewModel = new AddBookViewModel()
@@ -67,8 +73,10 @@ namespace ELibrary.Controllers
         [HttpGet]
         public IActionResult AllBooks()
         {
+            starUp();
+            ViewData["AddBook"] = "home";
+
             var userId = HttpContext.Session.GetString("userId");
-            ViewBag.UserType = "libary";
 
             var model = addBookService.GetAllBooks(userId, null, null, null, "Име на книгата а-я");
             var allGenres = this.addBookService.GetAllGenres();
@@ -76,43 +84,37 @@ namespace ELibrary.Controllers
             return View(model);
         }
 
-        //AllBooks Page - search book
+        //AllBooks Page - search books
         [Authorize]
-        [HttpPost]
-        
-        public IActionResult AllBooks(string bookName, string author, string genreId,string SortMethodId, string answer)
+        [HttpPost]        
+        public IActionResult AllBooksSearch(string bookName, string author, string genreId,string SortMethodId)
         {
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
+            ViewData["AddBook"] = "AllBooksSearch";
 
-            if(answer=="")
-            {
-                var model = addBookService.GetAllBooks(userId, bookName, author, genreId, SortMethodId);
-                var allGenres = this.addBookService.GetAllGenres();
-                model.Genres = allGenres;
-                return View(model);
-            }
-            if (answer == "")
-            {
-                var model = addBookService.DeleteBook(userId, bookName, author, genreId, SortMethodId,"sda");
-                var allGenres = this.addBookService.GetAllGenres();
-                model.Genres = allGenres;
-                return View(model);
-            }
-            else
-            {
-                HttpContext.Session.SetString("userId", userId);
-
-                ViewBag.UserType = "libary";
-                return RedirectToAction(nameof(UserAccountController.Home), "UserAccount");
-
-            }
-
+            var model = addBookService.GetAllBooks(userId, bookName, author, genreId, SortMethodId);
+            var allGenres = this.addBookService.GetAllGenres();
+            model.Genres = allGenres;
+            return View("AllBooks",model);
         }
-    
 
+        //AllBooks Page - Delete book
+        [Authorize]
+        [HttpPost]
+        public IActionResult DeleteBook(string bookName, string author, string genreId, string SortMethodId,string id)
+        {
+            starUp();
+            var userId = HttpContext.Session.GetString("userId");
+            ViewData["AddBook"] = "DeleteBook bookId="+ id;
 
+            var model =  addBookService.DeleteBook(userId, bookName, author, genreId, SortMethodId,id); 
+            var allGenres = this.addBookService.GetAllGenres();
+            model.Genres = allGenres;
+            return View("AllBooks", model);
+        }
 
+      
 
     }
 }

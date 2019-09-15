@@ -7,7 +7,7 @@
 
 <div class=" container">
     <h2>Добави книга</h2>
-
+    <h1>@ViewData["AddBook"]</h1>
     <hr />
     <form asp-action="AllBooks" asp-route-returnUrl="@ViewData["AddBook"]">
 
@@ -50,7 +50,7 @@
                     <span asp-validation-for="GenreId" class="text-danger col-md-4"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Търси" name="answer" class="btn btn-default" />
+                    <input type="submit" value="Търси" asp-action="AllBooksSearch" class="btn btn-default" />
 
                 </div>
 
@@ -58,17 +58,19 @@
             </div>
         </div>
 
-        <div class="row">
 
-            @foreach (var book in @Model.Books)
-            {
+        @foreach (var book in @Model.Books)
+        {
+            <div class="row">
+
                 @book.BookName @book.Author @book.GenreName<br />
-                <input type="submit" value="Редактирай" name="answer" asp-route-id="btn btn-default" />
-                <input type="submit" value="Премахни" name="answer" asp-route-id="btn btn-default" />
+                <input type="submit" value="Редактирай"  asp-route-id="@book.BookId" class="btn btn-default" />
+                <input type="submit" value="Премахни" asp-action="DeleteBook" asp-route-id="@book.BookId" class="btn btn-default" />
+                <br />
 
-            }
+            </div>
+        }
 
-        </div>
     </form>
 
 </div>
