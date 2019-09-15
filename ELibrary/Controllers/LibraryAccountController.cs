@@ -70,7 +70,7 @@ namespace ELibrary.Controllers
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
 
-            var model = addBookService.GetAllBooks(userId, null, null, null);
+            var model = addBookService.GetAllBooks(userId, null, null, null, "Име на книгата а-я");
             var allGenres = this.addBookService.GetAllGenres();
             model.Genres = allGenres;
             return View(model);
@@ -79,12 +79,12 @@ namespace ELibrary.Controllers
         //AllBooks Page - search book
         [Authorize]
         [HttpPost]
-        public IActionResult AllBooks(string bookName, string author, string genreId)
+        public IActionResult AllBooks(string bookName, string author, string genreId,string SortMethodId)
         {
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
 
-            var model = addBookService.GetAllBooks(userId, bookName, author, genreId);
+            var model = addBookService.GetAllBooks(userId, bookName, author, genreId, SortMethodId);
             var allGenres = this.addBookService.GetAllGenres();
             model.Genres = allGenres;
             return View(model);

@@ -13,7 +13,8 @@ namespace ELibrary.Services.Contracts.LibraryAccount
 
         string CreateBook(string bookName, string author, string genreId, string userId);
 
-        AllBooksViewModel GetAllBooks(string userId, string bookName, string author, string genreId);
+        AllBooksViewModel GetAllBooks(string userId, string bookName,
+            string author, string genreId, string SortMethodId);
 
 
     }

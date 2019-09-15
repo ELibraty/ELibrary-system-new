@@ -51,7 +51,8 @@ namespace ELibrary.Services.LibraryAccount
 
        
 
-        public AllBooksViewModel GetAllBooks(string userId, string bookName, string author, string genreId)
+        public AllBooksViewModel GetAllBooks(string userId, string bookName,
+            string author, string genreId,string SortMethodId)
         {
             var books = context.Books.Where(b =>
                 b.DeletedOn == null
@@ -80,14 +81,21 @@ namespace ELibrary.Services.LibraryAccount
                 books = books.Where(b => b.GenreId==genreId);
             }
 
+            if(SortMethodId== "Име на книгата я-а") books=books.OrderByDescending(b => b.BookName);
+            else if (SortMethodId == "Име на автора а-я")books = books.OrderBy(b => b.Author);
+            else if (SortMethodId == "Име на автора я-а") books = books.OrderByDescending(b => b.Author);
+            else if (SortMethodId == "Жанр а-я") books = books.OrderBy(b => b.GenreName);
+            else if (SortMethodId == "Жанр я-а") books = books.OrderByDescending(b => b.GenreName);
+            else books = books.OrderBy(b => b.BookName);
 
 
             var model = new AllBooksViewModel()
             {
                 Books = books,
-                Author=author,
-                BookName= bookName,
-                GenreId=genreId,                
+                Author = author,
+                BookName = bookName,
+                GenreId = genreId,
+                SortMethodId = SortMethodId,
             };
             return model;
         }
