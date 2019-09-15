@@ -16,6 +16,7 @@ namespace ELibrary.Services.Contracts.LibraryAccount
         AllBooksViewModel GetAllBooks(string userId, string bookName,
             string author, string genreId, string SortMethodId);
 
-
+        AllBooksViewModel DeleteBook(string userId, string bookName,
+            string author, string genreId, string SortMethodId, string bookId);
     }
 }

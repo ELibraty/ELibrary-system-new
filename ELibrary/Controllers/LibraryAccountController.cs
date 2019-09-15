@@ -79,17 +79,37 @@ namespace ELibrary.Controllers
         //AllBooks Page - search book
         [Authorize]
         [HttpPost]
-        public IActionResult AllBooks(string bookName, string author, string genreId,string SortMethodId)
+        
+        public IActionResult AllBooks(string bookName, string author, string genreId,string SortMethodId, string answer)
         {
             var userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
 
-            var model = addBookService.GetAllBooks(userId, bookName, author, genreId, SortMethodId);
-            var allGenres = this.addBookService.GetAllGenres();
-            model.Genres = allGenres;
-            return View(model);
-        }
+            if(answer=="")
+            {
+                var model = addBookService.GetAllBooks(userId, bookName, author, genreId, SortMethodId);
+                var allGenres = this.addBookService.GetAllGenres();
+                model.Genres = allGenres;
+                return View(model);
+            }
+            if (answer == "")
+            {
+                var model = addBookService.DeleteBook(userId, bookName, author, genreId, SortMethodId,"sda");
+                var allGenres = this.addBookService.GetAllGenres();
+                model.Genres = allGenres;
+                return View(model);
+            }
+            else
+            {
+                HttpContext.Session.SetString("userId", userId);
 
+                ViewBag.UserType = "libary";
+                return RedirectToAction(nameof(UserAccountController.Home), "UserAccount");
+
+            }
+
+        }
+    
 
 
 

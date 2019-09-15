@@ -49,7 +49,16 @@ namespace ELibrary.Services.LibraryAccount
             return "Книганата същесвува в библиотеката Ви!";           
         }
 
-       
+        public AllBooksViewModel DeleteBook(string userId, string bookName, string author, string genreId, string SortMethodId, string bookId)
+        {
+            var deleteBook = this.context.Books.FirstOrDefault(b => b.Id == bookId);
+            if(deleteBook!=null)
+            {
+                deleteBook.DeletedOn = DateTime.UtcNow;
+                this.context.SaveChanges();
+            }
+            return GetAllBooks(userId, bookName,author, genreId, SortMethodId);
+        }
 
         public AllBooksViewModel GetAllBooks(string userId, string bookName,
             string author, string genreId,string SortMethodId)
@@ -102,12 +111,6 @@ namespace ELibrary.Services.LibraryAccount
 
         public List<GenreListViewModel> GetAllGenres()
         {
-            /* var genres = this.context.Genres.OrderBy(g => g.Name).Select(g => new GenreListViewModel()
-             {
-                 Id = g.Id,
-                 Name = g.Name
-             }).Reverse().ToList();*/
-
             var genres = this.context.Genres.Select(g => new GenreListViewModel()
             {
                 Id = g.Id,
