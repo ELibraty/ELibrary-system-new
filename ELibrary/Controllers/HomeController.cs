@@ -22,14 +22,12 @@ using Microsoft.AspNetCore.Http;
 namespace ELibrary.Controllers
 {
     public class HomeController : Controller
-    {
-
-     
+    {     
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
 
         public HomeController(
@@ -47,8 +45,14 @@ namespace ELibrary.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index(string returnUrl = null)
+        public IActionResult Index(string returnUrl)
         {
+            if(ViewBag.userId != null)
+            {
+                var userId = HttpContext.Session.GetString("userId");
+                var type = this._context.Users.FirstOrDefault(x=>x.Id == userId).Type;
+                return RedirectToLocal(userId, type, returnUrl);
+            }
             return View();
         }
 
@@ -58,7 +62,6 @@ namespace ELibrary.Controllers
         public async Task<IActionResult> Index(IndexViewModel indexModel, string returnUrl = null)
         {
             ViewBag.UserType = "guest";
-
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -211,9 +214,9 @@ namespace ELibrary.Controllers
             else
             {
                 HttpContext.Session.SetString("userId", userId);
-                if(type=="admin") return RedirectToAction(nameof(AdminAccountController.Home), "AdminAccount");
-                else if (type == "library") return RedirectToAction(nameof(LibraryAccountController.Home), "LibraryAccount");
-                return RedirectToAction(nameof(UserAccountController.Home), "UserAccount");
+                if(type=="admin") return RedirectToAction(nameof(AdminAccountController.Index), "AdminAccount");
+                else if (type == "library") return RedirectToAction(nameof(LibraryAccountController.Index), "LibraryAccount");
+                return RedirectToAction(nameof(UserAccountController.Index), "UserAccount");
             }
         }
         #endregion

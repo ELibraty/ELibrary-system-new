@@ -97,7 +97,16 @@ namespace ELibrary.Services.LibraryAccount
             else if (SortMethodId == "Жанр я-а") books = books.OrderByDescending(b => b.GenreName);
             else books = books.OrderBy(b => b.BookName);
 
+            var genres = GetAllGenres().OrderByDescending(x=>x.Name).ToList();
 
+            var genre = new GenreListViewModel()
+            {
+                Id = null,
+                Name = "Изберете жанр"
+            };
+
+            genres.Add(genre);
+            genres.Reverse();
             var model = new AllBooksViewModel()
             {
                 Books = books,
@@ -105,6 +114,7 @@ namespace ELibrary.Services.LibraryAccount
                 BookName = bookName,
                 GenreId = genreId,
                 SortMethodId = SortMethodId,
+                Genres= genres
             };
             return model;
         }
@@ -116,19 +126,8 @@ namespace ELibrary.Services.LibraryAccount
                 Id = g.Id,
                 Name = g.Name
             }).ToList();
+            var result = genres.OrderBy(x => x.Name).ToList();       
 
-            var ganre = new GenreListViewModel()
-            {
-                Id = "",
-                Name = "Изберете жанр"
-            };
-
-            genres.Add(ganre);    
-            var result= genres.Select(g => new GenreListViewModel()
-            {
-                Id = g.Id,
-                Name = g.Name
-            }).Reverse().ToList();
             return result;
         }
     }

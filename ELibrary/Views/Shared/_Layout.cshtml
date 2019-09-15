@@ -38,10 +38,35 @@
                     <!-- Classy Menu -->
                     <nav class="classy-navbar justify-content-between" id="dentoNav">
                         <!-- Logo -->
-                        <a class="nav-brand" href="index.html">
-                            <img src="~/img/core-img/logo.png" style="width:85px"/>
-                        </a>
-                        <!-- Navbar Toggler -->
+                        @if (ViewBag.UserType == "user")
+                        {
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-brand">
+                                <img src="~/img/core-img/logo.png" style="width:85px" />
+
+                            </a>
+                        }
+                        else if (ViewBag.UserType == "Admin")
+                        {
+                            <a asp-area="" asp-controller="Admin" asp-action="Index" class="nav-brand">
+                                <img src="~/img/core-img/logo.png" style="width:85px" />
+
+                            </a>
+                        }
+                        else if (ViewBag.UserType == "Admin")
+                        {
+                            <a asp-area="" asp-controller="Admin" asp-action="Index" class="nav-brand">
+                                <img src="~/img/core-img/logo.png" style="width:85px" />
+
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-brand">
+                                <img src="~/img/core-img/logo.png" style="width:85px" />
+
+                            </a>
+                        }
+                                                                                                                                      <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
                             <span class="navbarToggler"><span></span><span></span><span></span></span>
                         </div>
@@ -55,7 +80,8 @@
                             <div class="classynav">
                                 <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
 
-                                    @if (SignInManager.IsSignedIn(User)){
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
                                         <ul id="nav">
 
                                             @if (ViewBag.UserType == "libary")
@@ -70,25 +96,25 @@
 
 
 
-                                        <li>
-                                            <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-                                        </li>
-                                        <li>
-                                            <button type="submit" class="btn btn-link navbar-btn navbar-link">Изход</button>
-                                        </li>
+                                            <li>
+                                                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                                            </li>
+                                            <li>
+                                                <button type="submit" class="btn btn-link navbar-btn navbar-link">Изход</button>
+                                            </li>
 
 
-                                                                                   
+
 
                                         </ul>
 
-                                     }
-                                     else
-                                     {
+                                    }
+                                    else
+                                    {
                                         <ul>
                                             <li><h2 style="color:RGB(161,214,226)">Електронна библиотека</h2></li>
                                         </ul>
-                                     }
+                                    }
                                 </form>
 
 

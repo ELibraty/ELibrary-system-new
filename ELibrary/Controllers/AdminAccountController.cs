@@ -8,7 +8,7 @@ namespace ELibrary.Controllers
 {
     public class AdminAccountController:Controller
     {
-        public IActionResult Home()
+        public IActionResult Index()
         {
             //var userId = HttpContext.Session.GetString("userId");
             //ViewData["Message"] = userId;
