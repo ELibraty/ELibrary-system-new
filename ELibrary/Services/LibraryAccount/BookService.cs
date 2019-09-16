@@ -42,7 +42,6 @@ namespace ELibrary.Services.LibraryAccount
                 };
                 this.context.Books.Add(newBook);
                 genreObj.Books.Add(newBook);
-                this.context.Books.Add(newBook);
                 this.context.SaveChanges();
                 return "Успешно добавена книганата!";
             }
@@ -58,6 +57,31 @@ namespace ELibrary.Services.LibraryAccount
                 this.context.SaveChanges();
             }
             return GetAllBooks(userId, bookName,author, genreId, SortMethodId);
+        }
+
+        public string EditBook(string bookName, string author, string genreId, string userId, string bookId)
+        {
+            var genreObj = this.context.Genres.FirstOrDefault(g =>
+                g.Id == genreId
+                && g.DeletedOn == null);
+
+            var book = this.context.Books.FirstOrDefault(b =>
+                b.Id == bookId);
+
+           // if (book != null)
+            //{
+                book.BookName = bookName;
+                book.Author = author;
+                book.GenreId = genreId;
+                book.Genre = genreObj;
+                book.UserId = userId;
+
+                
+                genreObj.Books.Add(book);
+                this.context.SaveChanges();
+                return "Успешно редактирана книганата!";
+           // }
+           // return "Книганата не същесвува в библиотеката Ви!";
         }
 
         public AllBooksViewModel GetAllBooks(string userId, string bookName,
@@ -129,6 +153,20 @@ namespace ELibrary.Services.LibraryAccount
             var result = genres.OrderBy(x => x.Name).ToList();       
 
             return result;
+        }
+
+        public AddBookViewModel GetBookData(string bookId)
+        {
+            var book = this.context.Books.FirstOrDefault(b => b.Id == bookId);
+            var model = new AddBookViewModel()
+            {
+                Author = book.Author,
+                BookName = book.BookName,
+                GenreId = book.GenreId,
+                Genres = GetAllGenres(),
+                BookId=bookId
+            };
+            return model;
         }
     }
 }

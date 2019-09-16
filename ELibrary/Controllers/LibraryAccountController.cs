@@ -49,6 +49,8 @@ namespace ELibrary.Controllers
             {
                 Genres = allGenres,
             };
+            ViewData["message"] = "Успешно добавена книга";
+
             return View(viewModel);
         }
 
@@ -58,8 +60,7 @@ namespace ELibrary.Controllers
         public IActionResult AddBook(string bookName,string author,string genreId)
         {
             StarUp();         
-
-            ViewData["AddBook"] =  this.addBookService.CreateBook(bookName, author, genreId, userId);
+            ViewData["message"] =  this.addBookService.CreateBook(bookName, author, genreId, userId);
             var allGenres = this.addBookService.GetAllGenres();            
             var viewModel = new AddBookViewModel()
             {
@@ -74,7 +75,6 @@ namespace ELibrary.Controllers
         public IActionResult AllBooks()
         {
             StarUp();
-            ViewData["AddBook"] = "home userId="+ userId;
             var model = addBookService.GetAllBooks(userId, null, null, null, "Име на книгата а-я");
             var allGenres = this.addBookService.GetAllGenres();
             return View(model);
@@ -97,13 +97,43 @@ namespace ELibrary.Controllers
         public IActionResult DeleteBook(string bookName, string author, string genreId, string SortMethodId,string id)
         {
             StarUp();
-            ViewData["AddBook"] = "Успешно премахната книга";
+            ViewData["message"] = "Успешно премахната книга";
             var model =  addBookService.DeleteBook(userId, bookName, author, genreId, SortMethodId,id); 
             var allGenres = this.addBookService.GetAllGenres();
             return View("AllBooks", model);
         }
 
-      
+        //AllBooks Page - Edit book
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditBookAllBook(string id)
+        {
+            StarUp();
+            var model = this.addBookService.GetBookData(id);
+            HttpContext.Session.SetString("editBookId", id);
+            return View("EditBook", model);
+        }
+
+
+        //AllBooks Page - Edit book
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditBook(AddBookViewModel model)
+        {
+            StarUp();
+            var bookId = HttpContext.Session.GetString("editBookId");
+
+            ViewData["message"] = this.addBookService.EditBook(
+                model.BookName, model.Author, model.GenreId, userId, bookId);
+            var allGenres = this.addBookService.GetAllGenres();
+            var viewModel = new AddBookViewModel()
+            {
+                Genres = allGenres,
+            };
+            return View(viewModel);
+        }
+
+
 
     }
 }

@@ -8,6 +8,13 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
 {
     public class AddBookViewModel
     {
+        public AddBookViewModel()
+        {
+           this.BookId = "";
+        }
+
+        public string BookId { get; set; }
+
         [Required]
         public string BookName { get; set; }
 

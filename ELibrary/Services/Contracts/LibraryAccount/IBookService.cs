@@ -11,12 +11,21 @@ namespace ELibrary.Services.Contracts.LibraryAccount
     {
         List<GenreListViewModel> GetAllGenres();
 
-        string CreateBook(string bookName, string author, string genreId, string userId);
+        string CreateBook(string bookName, string author,
+            string genreId, string userId);
 
         AllBooksViewModel GetAllBooks(string userId, string bookName,
             string author, string genreId, string SortMethodId);
 
         AllBooksViewModel DeleteBook(string userId, string bookName,
             string author, string genreId, string SortMethodId, string bookId);
+
+        AddBookViewModel GetBookData(string bookId);
+
+        string EditBook(string bookName, string author,
+            string genreId, string userId, string bookId);
+
+
+
     }
 }

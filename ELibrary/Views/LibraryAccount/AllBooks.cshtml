@@ -6,10 +6,10 @@
 
 
 <div class=" container">
-    <h2>Добави книга</h2>
-    <h1>@ViewData["AddBook"]</h1>
+    <h2>Добави книга</h2><br />
+    <h3>@ViewData["message"]</h3>
     <hr />
-    <form asp-action="AllBooks" asp-route-returnUrl="@ViewData["AddBook"]">
+    <form asp-action="AllBooks" asp-route-returnUrl="@ViewData["URL"]">
 
         <div class="row">
             <div class="col-md-12">
@@ -64,7 +64,7 @@
             <div class="row">
 
                 @book.BookName @book.Author @book.GenreName<br />
-                <input type="submit" value="Редактирай"  asp-route-id="@book.BookId" class="btn btn-default" />
+                <input type="submit" value="Редактирай"  asp-action="EditBookAllBook" asp-route-id="@book.BookId" class="btn btn-default" />
                 <input type="submit" value="Премахни" asp-action="DeleteBook" asp-route-id="@book.BookId" class="btn btn-default" />
                 <br />
 
