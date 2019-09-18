@@ -56,7 +56,8 @@ namespace ELibrary.Services.LibraryAccount
                 deleteBook.DeletedOn = DateTime.UtcNow;
                 this.context.SaveChanges();
             }
-            return GetAllBooks(userId, bookName,author, genreId, SortMethodId);
+            int currentPage=1;
+            return GetAllBooks(userId, bookName,author, genreId, SortMethodId, currentPage);
         }
 
         public string EditBook(string bookName, string author, string genreId, string userId, string bookId)
@@ -68,24 +69,34 @@ namespace ELibrary.Services.LibraryAccount
             var book = this.context.Books.FirstOrDefault(b =>
                 b.Id == bookId);
 
-           // if (book != null)
-            //{
-                book.BookName = bookName;
-                book.Author = author;
-                book.GenreId = genreId;
-                book.Genre = genreObj;
-                book.UserId = userId;
+            if (book != null)
+            {
+                var checkDublicateBook = this.context.Books.FirstOrDefault(b =>
+                     b.Id != bookId
+                     && b.BookName == bookName
+                     && b.Author == author);
+                if(checkDublicateBook==null)
+                {
+                    book.BookName = bookName;
+                    book.Author = author;
+                    book.GenreId = genreId;
+                    book.Genre = genreObj;
+                    book.UserId = userId;
 
+
+                    genreObj.Books.Add(book);
+                    this.context.SaveChanges();
+                    return "Успешно редактирана книганата!";
+                }
                 
-                genreObj.Books.Add(book);
-                this.context.SaveChanges();
-                return "Успешно редактирана книганата!";
-           // }
-           // return "Книганата не същесвува в библиотеката Ви!";
+                return "Редакцията на книгата дублира друга книга!";
+
+            }
+            return "Книганата не същесвува в библиотеката Ви!";
         }
 
         public AllBooksViewModel GetAllBooks(string userId, string bookName,
-            string author, string genreId,string SortMethodId)
+            string author, string genreId,string sortMethodId, int currentPage)
         {
             var books = context.Books.Where(b =>
                 b.DeletedOn == null
@@ -114,11 +125,11 @@ namespace ELibrary.Services.LibraryAccount
                 books = books.Where(b => b.GenreId==genreId);
             }
 
-            if(SortMethodId== "Име на книгата я-а") books=books.OrderByDescending(b => b.BookName);
-            else if (SortMethodId == "Име на автора а-я")books = books.OrderBy(b => b.Author);
-            else if (SortMethodId == "Име на автора я-а") books = books.OrderByDescending(b => b.Author);
-            else if (SortMethodId == "Жанр а-я") books = books.OrderBy(b => b.GenreName);
-            else if (SortMethodId == "Жанр я-а") books = books.OrderByDescending(b => b.GenreName);
+            if(sortMethodId== "Име на книгата я-а") books=books.OrderByDescending(b => b.BookName);
+            else if (sortMethodId == "Име на автора а-я")books = books.OrderBy(b => b.Author);
+            else if (sortMethodId == "Име на автора я-а") books = books.OrderByDescending(b => b.Author);
+            else if (sortMethodId == "Жанр а-я") books = books.OrderBy(b => b.GenreName);
+            else if (sortMethodId == "Жанр я-а") books = books.OrderByDescending(b => b.GenreName);
             else books = books.OrderBy(b => b.BookName);
 
             var genres = GetAllGenres().OrderByDescending(x=>x.Name).ToList();
@@ -137,7 +148,7 @@ namespace ELibrary.Services.LibraryAccount
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,
-                SortMethodId = SortMethodId,
+                SortMethodId = sortMethodId,
                 Genres= genres
             };
             return model;

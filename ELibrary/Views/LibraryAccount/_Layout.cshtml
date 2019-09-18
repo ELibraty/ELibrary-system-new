@@ -66,7 +66,7 @@
 
                             </a>
                         }
-                                                                                                                                      <!-- Navbar Toggler -->
+                        <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
                             <span class="navbarToggler"><span></span><span></span><span></span></span>
                         </div>
@@ -78,12 +78,30 @@
                             </div>
                             <!-- Nav Start -->
                             <div class="classynav">
-                               <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
 
-                                    <ul>
-                                        <li><h2 style="color:RGB(161,214,226)">Електронна библиотека</h2></li>
-                                    </ul>
+                                   
+                                        <ul id="nav">
+
+                                                <li><a asp-area="" asp-controller="LibraryAccount" asp-action="AllBooks">Всички книги</a></li>
+
+                                                <li><a asp-area="" asp-controller="LibraryAccount" asp-action="AddBook">Добавяна на книга</a></li>
+
+
+                                            <li>
+                                                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                                            </li>
+                                            <li>
+                                                <button type="submit" class="btn btn-link navbar-btn navbar-link">Изход</button>
+                                            </li>
+
+
+
+
+                                        </ul>
                                 </form>
+
+
                             </div>
                             <!-- Nav End -->
                         </div>
@@ -100,7 +118,7 @@
 
     <!-- ***** Footer Area Start ***** -->
     <footer class="footer-area bg-img bg-gradient-overlay" style="background-image: url('~/images/core-img/logo.png');">
-       
+
         <!-- Copywrite Area -->
         <div class="container">
             <div class="row">

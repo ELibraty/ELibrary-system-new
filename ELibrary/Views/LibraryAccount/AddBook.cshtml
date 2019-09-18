@@ -4,12 +4,15 @@
     ViewData["Title"] = "AddBook";
 }
 
-
-<div class=" container">
-    
+<div class=" container">    
     <div class="row">
-        <h2>Добави книга</h2><br />
-        <h3>@ViewData["message"]</h3>
+        <div class="col-md-12">
+            <h2>Добави книга</h2>
+
+        </div>
+        <div class="col-md-12">
+            <h3>@ViewData["message"]</h3>
+        </div>
         <hr />
         <div class="col-md-12">
             <form asp-action="AddBook" asp-route-returnUrl="@ViewData["AddBook"]">
@@ -29,11 +32,9 @@
                     <label asp-for="GenreId" class="control-label  col-md-2">Жанр</label>
 
                     <select asp-for="GenreId" class="col-md-6">
-
                         @foreach (var genre in Model.Genres)
                         {
                             <option value="@genre.Id">@genre.Name</option>
-
                         }
                     </select>
                     <span asp-validation-for="GenreId" class="text-danger col-md-4"></span>
@@ -44,7 +45,6 @@
             </form>
         </div>
     </div>
-
 </div>
 
 

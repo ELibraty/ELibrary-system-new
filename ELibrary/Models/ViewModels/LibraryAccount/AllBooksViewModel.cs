@@ -34,5 +34,8 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
         public List<GenreListViewModel> Genres { get; set; }
 
         public IEnumerable<BookViewModel> Books { get; set; }
+
+        public int CurrentPage { get; set; }
+
     }
 }

@@ -49,7 +49,6 @@ namespace ELibrary.Controllers
             {
                 Genres = allGenres,
             };
-            ViewData["message"] = "Успешно добавена книга";
 
             return View(viewModel);
         }
@@ -75,7 +74,9 @@ namespace ELibrary.Controllers
         public IActionResult AllBooks()
         {
             StarUp();
-            var model = addBookService.GetAllBooks(userId, null, null, null, "Име на книгата а-я");
+            int currentPage = 1;
+            var model = addBookService.GetAllBooks(userId, null,
+                null, null, "Име на книгата а-я", currentPage);
             var allGenres = this.addBookService.GetAllGenres();
             return View(model);
         }
@@ -86,7 +87,11 @@ namespace ELibrary.Controllers
         public IActionResult AllBooksSearch(string bookName, string author, string genreId,string SortMethodId)
         {
             StarUp();
-            var model = addBookService.GetAllBooks(userId, bookName, author, genreId, SortMethodId);
+
+            int currentPage = 1;
+            var model = addBookService.GetAllBooks(userId,
+                bookName, author, genreId, SortMethodId,currentPage);
+
             var allGenres = this.addBookService.GetAllGenres();
             return View("AllBooks",model);
         }

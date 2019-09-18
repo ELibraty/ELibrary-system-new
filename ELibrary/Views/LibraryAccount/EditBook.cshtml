@@ -6,14 +6,18 @@
 
 
 <div class=" container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Редактиране на книга</h2>
+        </div>
+        <div class="col-md-12">
+            <h3>@ViewData["message"]</h3>
+        </div>
+    </div>
+    
+   
 
     <div class="row">
-        <h2>Редактиране на книга</h2>
-        <br />
-        <br />
-
-        <h3>@ViewData["message"]</h3>
-        <hr />
         <div class="col-md-12">
             <form asp-action="EditBook" asp-route-returnUrl="@ViewData["URL"]">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
