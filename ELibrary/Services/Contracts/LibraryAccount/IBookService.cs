@@ -26,6 +26,6 @@ namespace ELibrary.Services.Contracts.LibraryAccount
             string genreId, string userId, string bookId);
 
 
-
+        string GiveBook(string userId, GiveBookViewModel model);
     }
 }

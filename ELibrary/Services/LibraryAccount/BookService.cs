@@ -179,5 +179,10 @@ namespace ELibrary.Services.LibraryAccount
             };
             return model;
         }
+
+        public string GiveBook(string userId, GiveBookViewModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

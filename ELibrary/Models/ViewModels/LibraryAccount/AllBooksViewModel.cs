@@ -19,7 +19,7 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
 
             this.SortMethods.Add("Жанр а-я");
             this.SortMethods.Add("Жанр я-а");
-        }
+        }       
 
         public string BookName { get; set; }
         
