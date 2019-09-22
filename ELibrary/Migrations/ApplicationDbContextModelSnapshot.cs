@@ -176,6 +176,8 @@ namespace ELibrary.Migrations
 
                     b.Property<DateTime?>("DeletedOn");
 
+                    b.Property<DateTime?>("SeenOn");
+
                     b.Property<string>("TextOfMessage");
 
                     b.Property<string>("UserId");

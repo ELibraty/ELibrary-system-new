@@ -11,7 +11,7 @@ using System;
 namespace ELibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190922153552_Initial")]
+    [Migration("20190922154845_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,6 +176,8 @@ namespace ELibrary.Migrations
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<DateTime?>("SeenOn");
 
                     b.Property<string>("TextOfMessage");
 

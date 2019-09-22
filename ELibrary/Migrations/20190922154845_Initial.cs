@@ -60,6 +60,7 @@ namespace ELibrary.Migrations
                     Id = table.Column<string>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
+                    SeenOn = table.Column<DateTime>(nullable: true),
                     TextOfMessage = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },

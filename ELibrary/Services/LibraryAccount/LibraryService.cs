@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace ELibrary.Services.LibraryAccount
 {
-    public class BookService: IAddBookService
+    public class LibraryService: IAddBookService
     {
         private ApplicationDbContext context;
 
-        public BookService(ApplicationDbContext context)
+        public LibraryService(ApplicationDbContext context)
         {
             this.context = context;
         }
@@ -43,7 +43,9 @@ namespace ELibrary.Services.LibraryAccount
                 this.context.Books.Add(newBook);
                 genreObj.Books.Add(newBook);
                 this.context.SaveChanges();
-                return "Успешно добавена книганата!";
+                string result = "Успешно добавена книганата!";
+                AddMessageAtDB(userId, result);
+                return result;
             }
             return "Книганата същесвува в библиотеката Ви!";           
         }
@@ -58,6 +60,8 @@ namespace ELibrary.Services.LibraryAccount
             {
                 deleteBook.DeletedOn = DateTime.UtcNow;
                 this.context.SaveChanges();
+                string result = "Успешно премахната книганата!";
+                AddMessageAtDB(userId, result);
             }
             return GetAllBooks(userId, bookName,author, genreId, SortMethodId, currentPage, countBookAtOnePage);
         }
@@ -88,7 +92,9 @@ namespace ELibrary.Services.LibraryAccount
 
                     genreObj.Books.Add(book);
                     this.context.SaveChanges();
-                    return "Успешно редактирана книганата!";
+                    string result = "Успешно редактирана книганата!";
+                    AddMessageAtDB(userId,  result);
+                    return result;
                 }
                 
                 return "Редакцията на книгата дублира друга книга!";
@@ -192,6 +198,22 @@ namespace ELibrary.Services.LibraryAccount
         public string GiveBook(string userId, GiveBookViewModel model)
         {
             throw new NotImplementedException();
+        }
+
+        public string AddMessageAtDB(string userId, string textOfMessage)
+        {
+            var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
+
+            Message message = new Message()
+            {
+                UserId = userId,
+                User = user,
+                TextOfMessage = textOfMessage
+            };
+
+            this.context.Messages.Add(message);
+            this.context.SaveChanges();
+            return message.Id;
         }
     }
 }

@@ -71,7 +71,8 @@ namespace ELibrary.Controllers
                 {
                     // This doesn't count login failures towards account lockout
                     // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                    if(this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn==null) != null)
+                   return await Login(indexModel, returnUrl);
+                /*if(this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn==null) != null)
                     {
                         var userName = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null).UserName;
 
@@ -105,10 +106,12 @@ namespace ELibrary.Controllers
                         }
                     }
                     ModelState.AddModelError(string.Empty, "Невалиден Email или парола!");
-                    return View(indexModel);
+                    return View(indexModel);*/
                 }
                 else
                 {
+                    return await Register(indexModel, returnUrl);
+
                     var userChack = this._context.Users.FirstOrDefault(u => u.Email == registerModel.Email);
                     if(userChack == null)
                     {
@@ -146,7 +149,113 @@ namespace ELibrary.Controllers
             return View(indexModel);
         }
 
-       
+
+
+
+        public async Task<IActionResult> Login(IndexViewModel indexModel, string returnUrl = null)
+        {
+            LoginViewModel loginModel = indexModel.LoginViewModel;
+
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            if (this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null) != null)
+            {
+                var userName = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email && x.DeletedOn == null).UserName;
+
+                var result = await _signInManager.PasswordSignInAsync(
+                    userName,
+                    loginModel.Password,
+                    loginModel.RememberMe,
+                    lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Успешно влизане!");
+                    var userId = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Id;
+                    var type = this._context.Users.FirstOrDefault(x => x.Email == loginModel.Email).Type;
+
+                    return RedirectToLocal(userId, type, returnUrl);
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, loginModel.RememberMe });
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return RedirectToAction(nameof(Lockout));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, $"Невалиден Email или парола!");
+                    return View(indexModel);
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Невалиден Email или парола!");
+            return View(indexModel);               
+            
+        }
+
+        
+        public async Task<IActionResult> Register(IndexViewModel indexModel, string returnUrl = null)
+        {
+            ViewBag.UserType = "guest";
+            ViewData["ReturnUrl"] = returnUrl;
+            var registerModel = indexModel.RegisterViewModel;
+            if (ModelState.IsValid)
+            {
+                var userChack = this._context.Users.FirstOrDefault(u => u.Email == registerModel.Email);
+                if (userChack == null)
+                {
+                    var type = registerModel.Type;
+                    var user = new ApplicationUser
+                    {
+                        Email = registerModel.Email,
+                        UserName = registerModel.UserName,
+                        Type = type
+                    };
+
+                    var result = await _userManager.CreateAsync(user, registerModel.Password);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("Успешно регистриран потребител!");
+                       
+
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                        await _emailSender.SendEmailConfirmationAsync(registerModel.Email, callbackUrl);
+
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _logger.LogInformation("Успешно регистриран потребител!");
+
+                        var userId = this._context.Users.FirstOrDefault(x => x.Email == registerModel.Email).Id;
+                        Message message = new Message()
+                        {
+                            UserId = userId,
+                            User = user,
+                            TextOfMessage = "Успешно регистриран потребител!"
+                        };
+
+                        this._context.Messages.Add(message);
+                        this._context.SaveChanges();
+
+                        return RedirectToLocal(userId, type, returnUrl);
+                    }
+                }
+                else
+                {
+                    ViewData["ReturnUrl"] = "Email адреса е зает!";
+                }
+            }
+
+            return View(indexModel);
+        }
+
+
+
+
+
 
 
         [HttpGet]
