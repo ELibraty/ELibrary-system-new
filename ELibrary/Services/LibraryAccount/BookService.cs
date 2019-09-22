@@ -48,7 +48,10 @@ namespace ELibrary.Services.LibraryAccount
             return "Книганата същесвува в библиотеката Ви!";           
         }
 
-        public AllBooksViewModel DeleteBook(string userId, string bookName, string author, string genreId, string SortMethodId, string bookId)
+        public AllBooksViewModel DeleteBook(string userId,
+            string bookName, string author, string genreId,
+            string SortMethodId, string bookId,
+            int currentPage, int countBookAtOnePage)
         {
             var deleteBook = this.context.Books.FirstOrDefault(b => b.Id == bookId);
             if(deleteBook!=null)
@@ -56,8 +59,7 @@ namespace ELibrary.Services.LibraryAccount
                 deleteBook.DeletedOn = DateTime.UtcNow;
                 this.context.SaveChanges();
             }
-            int currentPage=1;
-            return GetAllBooks(userId, bookName,author, genreId, SortMethodId, currentPage);
+            return GetAllBooks(userId, bookName,author, genreId, SortMethodId, currentPage, countBookAtOnePage);
         }
 
         public string EditBook(string bookName, string author, string genreId, string userId, string bookId)
@@ -96,7 +98,8 @@ namespace ELibrary.Services.LibraryAccount
         }
 
         public AllBooksViewModel GetAllBooks(string userId, string bookName,
-            string author, string genreId,string sortMethodId, int currentPage)
+            string author, string genreId,string sortMethodId,
+            int currentPage, int countBookAtOnePage)
         {
             var books = context.Books.Where(b =>
                 b.DeletedOn == null
@@ -125,6 +128,8 @@ namespace ELibrary.Services.LibraryAccount
                 books = books.Where(b => b.GenreId==genreId);
             }
 
+            
+
             if(sortMethodId== "Име на книгата я-а") books=books.OrderByDescending(b => b.BookName);
             else if (sortMethodId == "Име на автора а-я")books = books.OrderBy(b => b.Author);
             else if (sortMethodId == "Име на автора я-а") books = books.OrderByDescending(b => b.Author);
@@ -142,6 +147,9 @@ namespace ELibrary.Services.LibraryAccount
 
             genres.Add(genre);
             genres.Reverse();
+            int maxCountPage = books.Count() / countBookAtOnePage;
+            if (books.Count() % countBookAtOnePage != 0) maxCountPage++;
+
             var model = new AllBooksViewModel()
             {
                 Books = books,
@@ -149,7 +157,8 @@ namespace ELibrary.Services.LibraryAccount
                 BookName = bookName,
                 GenreId = genreId,
                 SortMethodId = sortMethodId,
-                Genres= genres
+                Genres= genres,
+                MaxCountPage=maxCountPage
             };
             return model;
         }

@@ -75,8 +75,9 @@ namespace ELibrary.Controllers
         {
             StarUp();
             int currentPage = 1;
+            int countBookAtOnePage = 1;
             var model = addBookService.GetAllBooks(userId, null,
-                null, null, "Име на книгата а-я", currentPage);
+                null, null, "Име на книгата а-я", currentPage, countBookAtOnePage);
             var allGenres = this.addBookService.GetAllGenres();
             return View(model);
         }
@@ -89,8 +90,10 @@ namespace ELibrary.Controllers
             StarUp();
 
             int currentPage = 1;
+            int countBookAtOnePage = 1;
+
             var model = addBookService.GetAllBooks(userId,
-                bookName, author, genreId, SortMethodId,currentPage);
+                bookName, author, genreId, SortMethodId,currentPage, countBookAtOnePage);
 
             var allGenres = this.addBookService.GetAllGenres();
             return View("AllBooks",model);
@@ -99,11 +102,15 @@ namespace ELibrary.Controllers
         //AllBooks Page - Delete book
         [Authorize]
         [HttpPost]
-        public IActionResult DeleteBook(string bookName, string author, string genreId, string SortMethodId,string id)
+        public IActionResult DeleteBook(string bookName,
+            string author, string genreId, string SortMethodId,string id)
         {
             StarUp();
             ViewData["message"] = "Успешно премахната книга";
-            var model =  addBookService.DeleteBook(userId, bookName, author, genreId, SortMethodId,id); 
+            int currentPage = 1;
+            int countBookAtOnePage = 1;
+            var model =  addBookService.DeleteBook(userId, bookName,
+                author, genreId, SortMethodId,id, currentPage, countBookAtOnePage); 
             var allGenres = this.addBookService.GetAllGenres();
             return View("AllBooks", model);
         }

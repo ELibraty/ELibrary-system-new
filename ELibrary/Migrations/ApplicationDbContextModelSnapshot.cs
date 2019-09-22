@@ -55,6 +55,8 @@ namespace ELibrary.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
+                    b.Property<string>("MessageId");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
 
@@ -79,6 +81,8 @@ namespace ELibrary.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GetBookId");
+
+                    b.HasIndex("MessageId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -161,6 +165,24 @@ namespace ELibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GetBooks");
+                });
+
+            modelBuilder.Entity("ELibrary.Models.Message", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<string>("TextOfMessage");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -276,6 +298,10 @@ namespace ELibrary.Migrations
                     b.HasOne("ELibrary.Models.GetBook")
                         .WithMany("Users")
                         .HasForeignKey("GetBookId");
+
+                    b.HasOne("ELibrary.Models.Message")
+                        .WithMany("Users")
+                        .HasForeignKey("MessageId");
                 });
 
             modelBuilder.Entity("ELibrary.Models.Book", b =>

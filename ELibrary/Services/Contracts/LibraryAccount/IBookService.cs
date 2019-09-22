@@ -15,10 +15,12 @@ namespace ELibrary.Services.Contracts.LibraryAccount
             string genreId, string userId);
 
         AllBooksViewModel GetAllBooks(string userId, string bookName,
-            string author, string genreId, string SortMethodId,int CurrentPage);
+            string author, string genreId, string sortMethodId,
+            int currentPage, int countBookAtOnePage);
 
         AllBooksViewModel DeleteBook(string userId, string bookName,
-            string author, string genreId, string SortMethodId, string bookId);
+            string author, string genreId, string SortMethodId, string bookId,
+            int currentPage, int countBookAtOnePage);
 
         AddBookViewModel GetBookData(string bookId);
 

@@ -54,6 +54,21 @@ namespace ELibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    TextOfMessage = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -93,6 +108,7 @@ namespace ELibrary.Migrations
                     LibraryLocation = table.Column<string>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    MessageId = table.Column<string>(nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     PasswordHash = table.Column<string>(nullable: true),
@@ -110,6 +126,12 @@ namespace ELibrary.Migrations
                         name: "FK_AspNetUsers_GetBooks_GetBookId",
                         column: x => x.GetBookId,
                         principalTable: "GetBooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Messages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Messages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -276,6 +298,11 @@ namespace ELibrary.Migrations
                 column: "GetBookId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_MessageId",
+                table: "AspNetUsers",
+                column: "MessageId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -339,6 +366,9 @@ namespace ELibrary.Migrations
 
             migrationBuilder.DropTable(
                 name: "GetBooks");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
         }
     }
 }

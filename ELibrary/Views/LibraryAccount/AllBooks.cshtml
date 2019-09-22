@@ -38,6 +38,8 @@
                     <span asp-validation-for="GenreId" class="text-danger col-md-4"></span>
                 </div>
 
+
+
                 <div class="form-group row">
                     <label asp-for="SortMethodId" class="control-label  col-md-2">Сортирай по</label>
 
@@ -48,6 +50,19 @@
                         }
                     </select>
                     <span asp-validation-for="GenreId" class="text-danger col-md-4"></span>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="CountBooksOfPage" class="control-label  col-md-2">Брой книги на една станица</label>
+
+                    <select asp-for="CountBooksOfPage" class="col-md-6">
+                        @foreach (var count in Model.CountBooksOfPageList)
+                        {
+                            <option value="@count">@count</option>
+
+                        }
+                    </select>
+                    <span asp-validation-for="CountBooksOfPage" class="text-danger col-md-4"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Търси" asp-action="AllBooksSearch" class="btn btn-default" />

@@ -19,7 +19,17 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
 
             this.SortMethods.Add("Жанр а-я");
             this.SortMethods.Add("Жанр я-а");
-        }       
+
+            this.CountBooksOfPageList = new List<int>();
+            
+            this.CountBooksOfPageList.Add(10);
+            this.CountBooksOfPageList.Add(15);
+            this.CountBooksOfPageList.Add(20);
+
+            this.CountBooksOfPage = this.CountBooksOfPageList[0];
+            this.SortMethodId = this.SortMethods[0];
+            this.CurrentPage = 1;
+        }
 
         public string BookName { get; set; }
         
@@ -36,6 +46,14 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
         public IEnumerable<BookViewModel> Books { get; set; }
 
         public int CurrentPage { get; set; }
+
+        public int MaxCountPage { get; set; }
+
+        public int CountBooksOfPage { get; set; }
+
+        public List<int> CountBooksOfPageList{ get; set; }
+
+
 
     }
 }
