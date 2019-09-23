@@ -6,7 +6,7 @@
 
 
 <div class=" container">
-    <h2>Добави книга</h2><br />
+    <h2>Всички добавени книга</h2><br />
     <h3>@ViewData["message"]</h3>
     <hr />
     <form asp-action="AllBooks" asp-route-returnUrl="@ViewData["URL"]">
@@ -73,18 +73,59 @@
             </div>
         </div>
 
-
         @foreach (var book in @Model.Books)
         {
             <div class="row">
 
                 @book.BookName @book.Author @book.GenreName<br />
-                <input type="submit" value="Редактирай"  asp-action="EditBookAllBook" asp-route-id="@book.BookId" class="btn btn-default" />
+                <input type="submit" value="Редактирай" asp-action="EditBookAllBook" asp-route-id="@book.BookId" class="btn btn-default" />
                 <input type="submit" value="Премахни" asp-action="DeleteBook" asp-route-id="@book.BookId" class="btn btn-default" />
                 <br />
 
             </div>
         }
+
+        <div class="row">
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-default"><<</button>
+                    <button type="button" class="btn btn-default"><</button>
+                </div>
+
+                <pre> </pre>
+                <div class="btn-group" role="group" aria-label="Last Pages group">
+                    @for (int i = Math.Max(Model.CurrentPage-5,1); i < Model.CurrentPage; i++)
+                    {
+                        <button type="button" class="btn btn-default">i</button>
+
+                    }
+                        
+                </div>
+                <pre> </pre>
+                <div class="btn-group" role="group" aria-label="Active Page group">
+                    <button type="button" class="btn btn-default">@Model.CurrentPage</button>
+                </div>
+                <pre> </pre>
+                <div class="btn-group" role="group" aria-label="Upcoming Page group">
+                    @for (int i = Model.CurrentPage + 1; i < Math.Min(Model.CurrentPage + 5, Model.MaxCountPage); i++)
+                    {
+                        <button type="button" class="btn btn-default">i</button>
+
+                    }
+
+                </div>
+                <pre> </pre>
+                <div class="btn-group" role="group" aria-label="Fourth group">
+
+                    <button type="button" class="btn btn-default">>></button>
+
+                    <button type="button" class="btn btn-default">></button>
+                </div>
+            </div>
+        </div>
+
+
+       
 
     </form>
 

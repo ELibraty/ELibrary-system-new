@@ -132,9 +132,7 @@ namespace ELibrary.Services.LibraryAccount
             if (genreId != null)
             {
                 books = books.Where(b => b.GenreId==genreId);
-            }
-
-            
+            }            
 
             if(sortMethodId== "Име на книгата я-а") books=books.OrderByDescending(b => b.BookName);
             else if (sortMethodId == "Име на автора а-я")books = books.OrderBy(b => b.Author);
@@ -156,9 +154,13 @@ namespace ELibrary.Services.LibraryAccount
             int maxCountPage = books.Count() / countBookAtOnePage;
             if (books.Count() % countBookAtOnePage != 0) maxCountPage++;
 
+            var viewBook = books.Skip((currentPage - 1) * countBookAtOnePage)
+                                .Take(countBookAtOnePage);
+
+
             var model = new AllBooksViewModel()
             {
-                Books = books,
+                Books = viewBook,
                 Author = author,
                 BookName = bookName,
                 GenreId = genreId,

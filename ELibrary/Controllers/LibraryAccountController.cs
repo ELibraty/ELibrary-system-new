@@ -75,7 +75,7 @@ namespace ELibrary.Controllers
         {
             StarUp();
             int currentPage = 1;
-            int countBookAtOnePage = 1;
+            int countBookAtOnePage =10;
             var model = addBookService.GetAllBooks(userId, null,
                 null, null, "Име на книгата а-я", currentPage, countBookAtOnePage);
             var allGenres = this.addBookService.GetAllGenres();
@@ -85,12 +85,9 @@ namespace ELibrary.Controllers
         //AllBooks Page - search books
         [Authorize]
         [HttpPost]        
-        public IActionResult AllBooksSearch(string bookName, string author, string genreId,string SortMethodId)
+        public IActionResult AllBooksSearch(string bookName, string author, string genreId,string SortMethodId,int currentPage, int countBookAtOnePage)
         {
             StarUp();
-
-            int currentPage = 1;
-            int countBookAtOnePage = 1;
 
             var model = addBookService.GetAllBooks(userId,
                 bookName, author, genreId, SortMethodId,currentPage, countBookAtOnePage);
