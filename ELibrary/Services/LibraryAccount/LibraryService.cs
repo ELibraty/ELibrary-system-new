@@ -105,7 +105,7 @@ namespace ELibrary.Services.LibraryAccount
 
         public AllBooksViewModel GetAllBooks(string userId, string bookName,
             string author, string genreId,string sortMethodId,
-            int currentPage, int countBookAtOnePage)
+            int currentPage, int CountBooksOfPage)
         {
             var books = context.Books.Where(b =>
                 b.DeletedOn == null
@@ -124,7 +124,7 @@ namespace ELibrary.Services.LibraryAccount
                 books = books.Where(b => b.BookName.Contains(bookName));
             }
 
-            if (author != null)
+            /*if (author != null)
             {
                 books = books.Where(b => b.Author.Contains(author));
             }
@@ -132,7 +132,7 @@ namespace ELibrary.Services.LibraryAccount
             if (genreId != null)
             {
                 books = books.Where(b => b.GenreId==genreId);
-            }            
+            }        */
 
             if(sortMethodId== "Име на книгата я-а") books=books.OrderByDescending(b => b.BookName);
             else if (sortMethodId == "Име на автора а-я")books = books.OrderBy(b => b.Author);
@@ -151,11 +151,11 @@ namespace ELibrary.Services.LibraryAccount
 
             genres.Add(genre);
             genres.Reverse();
-            int maxCountPage = books.Count() / countBookAtOnePage;
-            if (books.Count() % countBookAtOnePage != 0) maxCountPage++;
+            int maxCountPage = books.Count() / CountBooksOfPage;
+            if (books.Count() % CountBooksOfPage != 0) maxCountPage++;
 
-            var viewBook = books.Skip((currentPage - 1) * countBookAtOnePage)
-                                .Take(countBookAtOnePage);
+            var viewBook = books.Skip((currentPage - 1) * CountBooksOfPage)
+                                .Take(CountBooksOfPage);
 
 
             var model = new AllBooksViewModel()
@@ -166,7 +166,9 @@ namespace ELibrary.Services.LibraryAccount
                 GenreId = genreId,
                 SortMethodId = sortMethodId,
                 Genres= genres,
-                MaxCountPage=maxCountPage
+                MaxCountPage=maxCountPage,
+                CurrentPage= currentPage,
+                CountBooksOfPage= CountBooksOfPage
             };
             return model;
         }

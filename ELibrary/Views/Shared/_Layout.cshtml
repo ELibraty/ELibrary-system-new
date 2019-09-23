@@ -38,34 +38,10 @@
                     <!-- Classy Menu -->
                     <nav class="classy-navbar justify-content-between" id="dentoNav">
                         <!-- Logo -->
-                        @if (ViewBag.UserType == "user")
-                        {
-                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-brand">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-brand">
                                 <img src="~/img/core-img/logo.png" style="width:85px" />
 
-                            </a>
-                        }
-                        else if (ViewBag.UserType == "Admin")
-                        {
-                            <a asp-area="" asp-controller="Admin" asp-action="Index" class="nav-brand">
-                                <img src="~/img/core-img/logo.png" style="width:85px" />
-
-                            </a>
-                        }
-                        else if (ViewBag.UserType == "Admin")
-                        {
-                            <a asp-area="" asp-controller="Admin" asp-action="Index" class="nav-brand">
-                                <img src="~/img/core-img/logo.png" style="width:85px" />
-
-                            </a>
-                        }
-                        else
-                        {
-                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-brand">
-                                <img src="~/img/core-img/logo.png" style="width:85px" />
-
-                            </a>
-                        }
+                        </a>                      
                                                                                                                                       <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
                             <span class="navbarToggler"><span></span><span></span><span></span></span>
@@ -78,12 +54,9 @@
                             </div>
                             <!-- Nav Start -->
                             <div class="classynav">
-                               <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-
-                                    <ul>
-                                        <li><h2 style="color:RGB(161,214,226)">Електронна библиотека</h2></li>
-                                    </ul>
-                                </form>
+                                <ul>
+                                    <li><h2 style="color:RGB(161,214,226)">Електронна библиотека</h2></li>
+                                </ul>
                             </div>
                             <!-- Nav End -->
                         </div>
@@ -97,6 +70,11 @@
 
     @RenderBody()
     <hr />
+
+
+
+
+
 
     <!-- ***** Footer Area Start ***** -->
     <footer class="footer-area bg-img bg-gradient-overlay" style="background-image: url('~/images/core-img/logo.png');">

@@ -20,7 +20,7 @@ namespace ELibrary.Services.Contracts.LibraryAccount
 
         AllBooksViewModel DeleteBook(string userId, string bookName,
             string author, string genreId, string SortMethodId, string bookId,
-            int currentPage, int countBookAtOnePage);
+            int currentPage, int CountBooksOfPage);
 
         AddBookViewModel GetBookData(string bookId);
 

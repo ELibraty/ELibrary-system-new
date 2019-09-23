@@ -75,9 +75,8 @@ namespace ELibrary.Controllers
         {
             StarUp();
             int currentPage = 1;
-            int countBookAtOnePage =10;
             var model = addBookService.GetAllBooks(userId, null,
-                null, null, "Име на книгата а-я", currentPage, countBookAtOnePage);
+                null, null, "Име на книгата а-я", currentPage, 10);
             var allGenres = this.addBookService.GetAllGenres();
             return View(model);
         }
@@ -85,15 +84,31 @@ namespace ELibrary.Controllers
         //AllBooks Page - search books
         [Authorize]
         [HttpPost]        
-        public IActionResult AllBooksSearch(string bookName, string author, string genreId,string SortMethodId,int currentPage, int countBookAtOnePage)
+        public IActionResult AllBooksSearch(string bookName, string author, string genreId,string SortMethodId,int currentPage, int CountBooksOfPage)
         {
             StarUp();
-
+            //int countBooksOfPage = 1;
             var model = addBookService.GetAllBooks(userId,
-                bookName, author, genreId, SortMethodId,currentPage, countBookAtOnePage);
+                bookName, author, genreId, SortMethodId, currentPage, CountBooksOfPage);
 
             var allGenres = this.addBookService.GetAllGenres();
             return View("AllBooks",model);
+        }
+
+
+        //AllBooks Page - search books
+        [Authorize]
+        [HttpPost]
+        public IActionResult ChangePage(string bookName, string author,
+            string genreId, string SortMethodId, int id, int CountBooksOfPage)
+        {
+            StarUp();
+            //int countBooksOfPage = 1;
+            var model = addBookService.GetAllBooks(userId,
+                bookName, author, genreId, SortMethodId, id, CountBooksOfPage);
+
+            var allGenres = this.addBookService.GetAllGenres();
+            return View("AllBooks", model);
         }
 
         //AllBooks Page - Delete book
@@ -105,9 +120,8 @@ namespace ELibrary.Controllers
             StarUp();
             ViewData["message"] = "Успешно премахната книга";
             int currentPage = 1;
-            int countBookAtOnePage = 1;
             var model =  addBookService.DeleteBook(userId, bookName,
-                author, genreId, SortMethodId,id, currentPage, countBookAtOnePage); 
+                author, genreId, SortMethodId,id, currentPage, 10); 
             var allGenres = this.addBookService.GetAllGenres();
             return View("AllBooks", model);
         }
