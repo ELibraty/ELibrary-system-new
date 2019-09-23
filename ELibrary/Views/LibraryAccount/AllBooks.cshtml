@@ -88,8 +88,15 @@
             <div class="row">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group" role="group" aria-label="First group">
-                        <input type="submit" value="|<" asp-route-id="1" asp-action="ChangePage" class="btn btn-default" />
-                        <input type="submit" value="<" asp-route-id="@Model.CurrentPage-1" asp-action="ChangePage" class="btn btn-default" />
+                        @if (Model.CurrentPage >= 1)
+                        {
+                            @if (Model.CurrentPage >= 2)
+                            {
+                                <input type="submit" value="|<" asp-route-id="1" asp-action="ChangePage" class="btn btn-default" />
+                            }
+                            <input type="submit" value="<" asp-route-id="@Model.CurrentPage-1" asp-action="ChangePage" class="btn btn-default" />
+
+                        }
 
                     </div>
 
@@ -119,10 +126,19 @@
                     </div>
                     <pre> </pre>
                     <div class="btn-group" role="group" aria-label="Fourth group">
+                        <div class="btn-group" role="group" aria-label="First group">
+                            @if (Model.CurrentPage < Model.MaxCountPage)
+                            {
+                                <input type="submit" value=">" asp-route-id="@Model.CurrentPage+1" asp-action="ChangePage" class="btn btn-default" />
 
-                        <input type="submit" value=">" asp-route-id="@Model.CurrentPage+1" asp-action="ChangePage" class="btn btn-default" />
-                        <input type="submit" value=">|" asp-route-id="@Model.MaxCountPage" asp-action="ChangePage" class="btn btn-default" />
+                                @if (Model.CurrentPage < Model.MaxCountPage - 1)
+                                {
+                                    <input type="submit" value=">|" asp-route-id="@Model.MaxCountPage" asp-action="ChangePage" class="btn btn-default" />
+                                }
 
+                            }
+
+                        </div>
                     </div>
                 </div>
             </div>
