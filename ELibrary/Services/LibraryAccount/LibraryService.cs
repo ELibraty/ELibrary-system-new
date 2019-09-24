@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ELibrary.Services.LibraryAccount
 {
-    public class LibraryService: IAddBookService
+    public class LibraryService: ILibraryService
     {
         private ApplicationDbContext context;
 
@@ -124,7 +124,7 @@ namespace ELibrary.Services.LibraryAccount
                 books = books.Where(b => b.BookName.Contains(bookName));
             }
 
-            /*if (author != null)
+            if (author != null)
             {
                 books = books.Where(b => b.Author.Contains(author));
             }
@@ -132,7 +132,7 @@ namespace ELibrary.Services.LibraryAccount
             if (genreId != null)
             {
                 books = books.Where(b => b.GenreId==genreId);
-            }        */
+            }      
 
             if(sortMethodId== "Име на книгата я-а") books=books.OrderByDescending(b => b.BookName);
             else if (sortMethodId == "Име на автора а-я")books = books.OrderBy(b => b.Author);
@@ -161,7 +161,7 @@ namespace ELibrary.Services.LibraryAccount
             var model = new AllBooksViewModel()
             {
                 Books = viewBook,
-                Author = author,
+                Author = userId,
                 BookName = bookName,
                 GenreId = genreId,
                 SortMethodId = sortMethodId,

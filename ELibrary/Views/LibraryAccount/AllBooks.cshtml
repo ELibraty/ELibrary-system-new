@@ -105,7 +105,7 @@
                         @for (int i = Math.Max(Model.CurrentPage - 5, 1); i < Model.CurrentPage; i++)
                         {
                             <input type="submit" value="@i" asp-route-id="@i" asp-action="ChangePage" class="btn btn-default" />
-                            
+
 
                         }
 
@@ -158,9 +158,15 @@
         }
             <div>
                 CountBooksOfPage=@Model.CountBooksOfPage
+                Author=@Model.Author|
+                BookName=@Model.BookName|
+                GenreId=@Model.GenreId|
+
 
                 MaxCountPage=@Model.MaxCountPage
                 CurrentPage=@Model.CurrentPage
+
+ViewBag.model.Author= @ViewBag.model.Author
             </div>
 
 

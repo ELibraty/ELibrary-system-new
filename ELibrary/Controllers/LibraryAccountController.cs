@@ -13,13 +13,13 @@ namespace ELibrary.Controllers
 {
     public class LibraryAccountController:Controller
     {
-        private IAddBookService addBookService;
+        private ILibraryService libraryService;
         private string userId;
 
         public LibraryAccountController(
-            IAddBookService addBookService)
+            ILibraryService addBookService)
         {
-            this.addBookService = addBookService;
+            this.libraryService = addBookService;
         }
 
         //Home Page
@@ -35,7 +35,11 @@ namespace ELibrary.Controllers
         {
             userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
+            ViewBag.userId = userId;
+
         }
+
+
 
         //AddBook Page - view
         [Authorize]
@@ -44,7 +48,7 @@ namespace ELibrary.Controllers
         {
             StarUp();
 
-            var allGenres = this.addBookService.GetAllGenres();
+            var allGenres = this.libraryService.GetAllGenres();
             var viewModel = new AddBookViewModel()
             {
                 Genres = allGenres,
@@ -59,8 +63,8 @@ namespace ELibrary.Controllers
         public IActionResult AddBook(string bookName,string author,string genreId)
         {
             StarUp();         
-            ViewData["message"] =  this.addBookService.CreateBook(bookName, author, genreId, userId);
-            var allGenres = this.addBookService.GetAllGenres();            
+            ViewData["message"] =  this.libraryService.CreateBook(bookName, author, genreId, userId);
+            var allGenres = this.libraryService.GetAllGenres();            
             var viewModel = new AddBookViewModel()
             {
                 Genres = allGenres,
@@ -75,9 +79,10 @@ namespace ELibrary.Controllers
         {
             StarUp();
             int currentPage = 1;
-            var model = addBookService.GetAllBooks(userId, null,
+            var model = libraryService.GetAllBooks(userId, null,
                 null, null, "Име на книгата а-я", currentPage, 10);
-            var allGenres = this.addBookService.GetAllGenres();
+            ViewBag.model.Author = model.Author;
+            
             return View(model);
         }
 
@@ -88,10 +93,10 @@ namespace ELibrary.Controllers
         {
             StarUp();
             //int countBooksOfPage = 1;
-            var model = addBookService.GetAllBooks(userId,
+            var model = libraryService.GetAllBooks(userId,
                 bookName, author, genreId, SortMethodId, currentPage, CountBooksOfPage);
 
-            var allGenres = this.addBookService.GetAllGenres();
+            var allGenres = this.libraryService.GetAllGenres();
             return View("AllBooks",model);
         }
 
@@ -104,10 +109,10 @@ namespace ELibrary.Controllers
         {
             StarUp();
             //int countBooksOfPage = 1;
-            var model = addBookService.GetAllBooks(userId,
+            var model = libraryService.GetAllBooks(userId,
                 bookName, author, genreId, SortMethodId, id, CountBooksOfPage);
 
-            var allGenres = this.addBookService.GetAllGenres();
+            var allGenres = this.libraryService.GetAllGenres();
             return View("AllBooks", model);
         }
 
@@ -120,9 +125,9 @@ namespace ELibrary.Controllers
             StarUp();
             ViewData["message"] = "Успешно премахната книга";
             int currentPage = 1;
-            var model =  addBookService.DeleteBook(userId, bookName,
+            var model = libraryService.DeleteBook(userId, bookName,
                 author, genreId, SortMethodId,id, currentPage, 10); 
-            var allGenres = this.addBookService.GetAllGenres();
+            var allGenres = this.libraryService.GetAllGenres();
             return View("AllBooks", model);
         }
 
@@ -132,7 +137,7 @@ namespace ELibrary.Controllers
         public IActionResult EditBookAllBook(string id)
         {
             StarUp();
-            var model = this.addBookService.GetBookData(id);
+            var model = this.libraryService.GetBookData(id);
             HttpContext.Session.SetString("editBookId", id);
             return View("EditBook", model);
         }
@@ -146,9 +151,9 @@ namespace ELibrary.Controllers
             StarUp();
             var bookId = HttpContext.Session.GetString("editBookId");
 
-            ViewData["message"] = this.addBookService.EditBook(
+            ViewData["message"] = this.libraryService.EditBook(
                 model.BookName, model.Author, model.GenreId, userId, bookId);
-            var allGenres = this.addBookService.GetAllGenres();
+            var allGenres = this.libraryService.GetAllGenres();
             var viewModel = new AddBookViewModel()
             {
                 Genres = allGenres,

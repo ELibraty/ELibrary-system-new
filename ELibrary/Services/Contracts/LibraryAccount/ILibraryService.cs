@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ELibrary.Services.Contracts.LibraryAccount
 {
-    public interface IAddBookService
+    public interface ILibraryService
     {
         List<GenreListViewModel> GetAllGenres();
 

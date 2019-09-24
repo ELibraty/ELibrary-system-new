@@ -55,7 +55,7 @@ namespace ELibrary
             });
             //.UseHttpContextItemsMiddleware();
 
-            services.AddScoped<IAddBookService, LibraryService>();
+            services.AddScoped<ILibraryService, LibraryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
