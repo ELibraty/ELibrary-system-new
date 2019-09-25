@@ -161,7 +161,7 @@ namespace ELibrary.Services.LibraryAccount
             var model = new AllBooksViewModel()
             {
                 Books = viewBook,
-                Author = userId,
+                Author = author,
                 BookName = bookName,
                 GenreId = genreId,
                 SortMethodId = sortMethodId,

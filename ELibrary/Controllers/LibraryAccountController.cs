@@ -35,7 +35,7 @@ namespace ELibrary.Controllers
         {
             userId = HttpContext.Session.GetString("userId");
             ViewBag.UserType = "libary";
-            ViewBag.userId = userId;
+            HttpContext.Session.SetString("userId",userId);
 
         }
 
@@ -81,7 +81,7 @@ namespace ELibrary.Controllers
             int currentPage = 1;
             var model = libraryService.GetAllBooks(userId, null,
                 null, null, "Име на книгата а-я", currentPage, 10);
-            ViewBag.model.Author = model.Author;
+            //ViewBag.model.Author = model.Author;
             
             return View(model);
         }
@@ -89,12 +89,15 @@ namespace ELibrary.Controllers
         //AllBooks Page - search books
         [Authorize]
         [HttpPost]        
-        public IActionResult AllBooksSearch(string bookName, string author, string genreId,string SortMethodId,int currentPage, int CountBooksOfPage)
+        public IActionResult AllBooksSearch(string bookName, string author,
+            string genreId,string sortMethodId,int currentPage, int countBooksOfPage)
         {
             StarUp();
-            //int countBooksOfPage = 1;
+            //countBooksOfPage = 10;
+            currentPage = 1;
+
             var model = libraryService.GetAllBooks(userId,
-                bookName, author, genreId, SortMethodId, currentPage, CountBooksOfPage);
+                bookName, author, genreId, sortMethodId, currentPage, countBooksOfPage);
 
             var allGenres = this.libraryService.GetAllGenres();
             return View("AllBooks",model);
@@ -124,9 +127,8 @@ namespace ELibrary.Controllers
         {
             StarUp();
             ViewData["message"] = "Успешно премахната книга";
-            int currentPage = 1;
             var model = libraryService.DeleteBook(userId, bookName,
-                author, genreId, SortMethodId,id, currentPage, 10); 
+                author, genreId, SortMethodId,id, 1, 10); 
             var allGenres = this.libraryService.GetAllGenres();
             return View("AllBooks", model);
         }
