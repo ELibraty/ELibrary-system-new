@@ -199,11 +199,6 @@ namespace ELibrary.Services.LibraryAccount
             return model;
         }
 
-        public string GiveBook(string userId, GiveBookViewModel model)
-        {
-            throw new NotImplementedException();
-        }
-
         public string AddMessageAtDB(string userId, string textOfMessage)
         {
             var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
@@ -218,6 +213,37 @@ namespace ELibrary.Services.LibraryAccount
             this.context.Messages.Add(message);
             this.context.SaveChanges();
             return message.Id;
+        }
+
+        public GiveBookViewModel GetGiveBookInformation(string userId)
+        {
+            var model = new GiveBookViewModel() { };
+            model.AllBooks = this.GetAllBooks(userId, null,null,
+                null, "Име на книгата а-я", 1,10);
+            //model.AllUsers
+
+           return model;
+        }
+
+        public AllUsersViewModel AllUsers()
+        {
+            var users = context.Users.Select(u => new UserViewModel()
+            {
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                UserId = u.Id,
+                UserName = u.UserName
+            }).ToList();
+
+            //if (sortMethodId == "Име на книгата я-а") books = books.OrderByDescending(b => b.BookName);
+            //else if (sortMethodId == "Име на автора а-я") books = books.OrderBy(b => b.Author);
+
+
+            AllUsersViewModel model = new AllUsersViewModel()
+            {
+                Users= users
+            };
+            return model;
         }
     }
 }

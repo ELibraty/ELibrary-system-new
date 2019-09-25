@@ -9,5 +9,6 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
     {
         public AllBooksViewModel AllBooks;
 
+        public AllUsersViewModel AllUsers;
     }
 }

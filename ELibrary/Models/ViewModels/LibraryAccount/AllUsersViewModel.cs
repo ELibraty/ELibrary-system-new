@@ -13,11 +13,14 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
             this.SortMethods.Add("Потребителско име а-я");
             this.SortMethods.Add("Потребителско име я-а");
 
-           /* this.SortMethods.Add("Име на автора а-я");
-            this.SortMethods.Add("Име на автора я-а");
+            this.CountUsersOfPageList = new List<int>();
 
-            this.SortMethods.Add("Жанр а-я");
-            this.SortMethods.Add("Жанр я-а");*/
+            this.CountUsersOfPageList.Add(10);
+            this.CountUsersOfPageList.Add(15);
+            this.CountUsersOfPageList.Add(20);
+
+            this.CountUsersOfPage = this.CountUsersOfPageList[0];
+            this.SortMethodId = this.SortMethods[0];
         }
 
 
@@ -27,12 +30,20 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
 
         public string LastName { get; set; }
 
-        public string UserId { get; set; }
-
         public string SortMethodId { get; set; }
 
-        public List<string> SortMethods { get; set; }          
+        public List<string> SortMethods { get; set; }
+
+        public List<UserViewModel> Users { get; set; }
+
+
 
         public int CurrentPage { get; set; }
+
+        public int MaxUsersPage { get; set; }
+
+        public int CountUsersOfPage { get; set; }
+
+        public List<int> CountUsersOfPageList { get; set; }
     }
 }

@@ -27,7 +27,14 @@ namespace ELibrary.Services.Contracts.LibraryAccount
         string EditBook(string bookName, string author,
             string genreId, string userId, string bookId);
 
+        GiveBookViewModel GetGiveBookInformation(string userId);
 
-        string GiveBook(string userId, GiveBookViewModel model);
+        AllUsersViewModel AllUsers();
+
+
+
+        // string GiveBook(string userId, GiveBookViewModel model);
+
+
     }
 }
