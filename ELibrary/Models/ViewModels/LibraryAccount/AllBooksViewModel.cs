@@ -28,7 +28,7 @@ namespace ELibrary.Models.ViewModels.LibraryAccount
 
             this.CountBooksOfPage = this.CountBooksOfPageList[0];
             this.SortMethodId = this.SortMethods[0];
-            //this.CurrentPage = 1;
+            this.CurrentPage = 1;
         }
 
         public string BookName { get; set; }

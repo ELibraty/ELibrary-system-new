@@ -215,25 +215,22 @@ namespace ELibrary.Services.LibraryAccount
             return message.Id;
         }
 
-        public GiveBookViewModel GetGiveBookInformation(string userId)
+      /*  public GiveBookViewModel GetGiveBookInformation(string userId)
         {
-            var model = new GiveBookViewModel() { };
-            model.AllBooks = this.GetAllBooks(userId, null,null,
-                null, "Име на книгата а-я", 1,10);
-            //model.AllUsers
-
-           return model;
+           
         }
-
+        */
         public AllUsersViewModel AllUsers()
         {
-            var users = context.Users.Select(u => new UserViewModel()
-            {
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                UserId = u.Id,
-                UserName = u.UserName
-            }).ToList();
+            var users = context.Users.Where(u=>
+                    u.Type=="user")
+                .Select(u => new UserViewModel()
+                {
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    UserId = u.Id,
+                    UserName = u.UserName
+                }).ToList();
 
             //if (sortMethodId == "Име на книгата я-а") books = books.OrderByDescending(b => b.BookName);
             //else if (sortMethodId == "Име на автора а-я") books = books.OrderBy(b => b.Author);
@@ -244,6 +241,35 @@ namespace ELibrary.Services.LibraryAccount
                 Users= users
             };
             return model;
+        }
+
+        public GiveBookViewModel GetGiveBookInformation(string userId)
+        {
+            var allBooks = this.GetAllBooks(userId, null, null,
+                 null, "Име на книгата а-я", 1, 10);
+            var allUsers = AllUsers();
+            var model = new GiveBookViewModel()
+            {
+                AllBooks= allBooks,
+                AllUsers= allUsers
+            };
+
+
+            return model;
+        }
+
+        public GiveBookViewModel GetGiveBookInformationSearchBook(string userId, GiveBookViewModel model)
+        {
+            var modelBook = model.AllBooks;
+            var allBooks = this.GetAllBooks(userId, modelBook.BookName, modelBook.Author,
+                modelBook.GenreId, modelBook.SortMethodId, modelBook.CurrentPage, modelBook.CountBooksOfPage);
+            allBooks.Author = modelBook.Author==null? "Null":modelBook.Author;
+            allBooks.BookName = modelBook.BookName == null ? "Null" : modelBook.BookName;
+
+            var allUsers = new AllUsersViewModel();// model.AllUsers;
+            var returnModel = new GiveBookViewModel(allBooks, allUsers);
+
+            return returnModel;
         }
     }
 }

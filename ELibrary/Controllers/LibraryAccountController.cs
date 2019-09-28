@@ -80,24 +80,20 @@ namespace ELibrary.Controllers
             var model = libraryService.GetAllBooks(userId, null,
                 null, null, "Име на книгата а-я", currentPage, 10);
             //ViewBag.model.Author = model.Author;
-            
             return View(model);
         }
 
         //AllBooks Page - search books
         [Authorize]
         [HttpPost]
-        /* public IActionResult AllBooksSearch(string bookName, string author,
-             string genreId,string sortMethodId,int currentPage, int countBooksOfPage)
-        */
         public IActionResult AllBooksSearch(AllBooksViewModel model)
         {
             StarUp();
             //countBooksOfPage = 10;
+            var a = model;
             var returnModel = libraryService.GetAllBooks(userId,
                 model.BookName, model.Author, model.GenreId, model.SortMethodId, 1, model.CountBooksOfPage);
-
-            var allGenres = this.libraryService.GetAllGenres();
+            
             return View("AllBooks", returnModel);
         }
 
@@ -107,15 +103,13 @@ namespace ELibrary.Controllers
         [HttpPost]
         /* public IActionResult ChangePage(string bookName, string author,
              string genreId, string SortMethodId, int id, int CountBooksOfPage)*/
-        public IActionResult ChangePage(AllBooksViewModel model, int id)
+        public IActionResult ChangePageAllBook(AllBooksViewModel model, int id)
         {
             StarUp();
             //int countBooksOfPage = 1;
             var returnModel = libraryService.GetAllBooks(userId,
               model.BookName, model.Author, model.GenreId, model.SortMethodId, id, model.CountBooksOfPage);
             
-
-            var allGenres = this.libraryService.GetAllGenres();
             return View("AllBooks", returnModel);
         }
 
@@ -131,7 +125,6 @@ namespace ELibrary.Controllers
             var returnModel = libraryService.DeleteBook(userId, model.BookName,
                 model.Author, model.GenreId, model.SortMethodId, id, 1, 10);
                 
-            var allGenres = this.libraryService.GetAllGenres();
             return View("AllBooks", returnModel);
         }
 
@@ -172,9 +165,28 @@ namespace ELibrary.Controllers
         public IActionResult GiveBook()
         {
             StarUp();
-            var model = this.libraryService.GetGiveBookInformation(userId);
+            ViewData["message"] = "HttpGet";
 
-            return View(model);
+            var model = this.libraryService.GetGiveBookInformation(userId);
+            return View( model);
+        }
+
+
+        //AllBooks Page - Edit book
+        [Authorize]
+        [HttpPost]
+        public IActionResult GiveBook(GiveBookViewModel model)
+        {
+            StarUp();
+            var bookModel = model.AllBooks;
+            var author = bookModel.Author==null? "null": bookModel.Author;
+            var bookName = bookModel.BookName == null ? "null" : bookModel.BookName;
+
+            ViewData["message"] = $"HttpPost   {bookName} {author}";
+            
+            var resultModel = this.libraryService.
+               GetGiveBookInformationSearchBook(userId, model);
+            return View(resultModel);
         }
     }
 }

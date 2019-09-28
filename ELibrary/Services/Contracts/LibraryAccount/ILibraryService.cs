@@ -29,6 +29,10 @@ namespace ELibrary.Services.Contracts.LibraryAccount
 
         GiveBookViewModel GetGiveBookInformation(string userId);
 
+
+        GiveBookViewModel GetGiveBookInformationSearchBook(string userId, GiveBookViewModel model);
+
+
         AllUsersViewModel AllUsers();
 
 
