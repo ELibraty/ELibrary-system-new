@@ -58,9 +58,11 @@ namespace ELibrary.Controllers
         //AddBook Page - add new book
         [Authorize]
         [HttpPost]
-        public IActionResult AddBook(string bookName,string author,string genreId)
+        public IActionResult AddBook(AddBookViewModel model, string genreId)
         {
-            StarUp();         
+            StarUp();
+            string bookName = model.BookName;
+            string author = model.Author;
             ViewData["message"] =  this.libraryService.CreateBook(bookName, author, genreId, userId);
             var allGenres = this.libraryService.GetAllGenres();            
             var viewModel = new AddBookViewModel()
@@ -90,7 +92,6 @@ namespace ELibrary.Controllers
         {
             StarUp();
             //countBooksOfPage = 10;
-            var a = model;
             var returnModel = libraryService.GetAllBooks(userId,
                 model.BookName, model.Author, model.GenreId, model.SortMethodId, 1, model.CountBooksOfPage);
             
@@ -167,7 +168,10 @@ namespace ELibrary.Controllers
             StarUp();
             ViewData["message"] = "HttpGet";
 
-            var model = this.libraryService.GetGiveBookInformation(userId);
+            //var model = this.libraryService.GetGiveBookInformation(userId);
+            int currentPage = 1;
+            var model = libraryService.GetAllBooks(userId, null,
+                null, null, "Име на книгата а-я", currentPage, 10);
             return View( model);
         }
 
@@ -175,18 +179,27 @@ namespace ELibrary.Controllers
         //AllBooks Page - Edit book
         [Authorize]
         [HttpPost]
-        public IActionResult GiveBook(GiveBookViewModel model)
+        public IActionResult GiveBook(AllBooksViewModel model)//AllBooksViewModel bookModel,AllUsersViewModel allUsers)
         {
             StarUp();
-            var bookModel = model.AllBooks;
-            var author = bookModel.Author==null? "null": bookModel.Author;
-            var bookName = bookModel.BookName == null ? "null" : bookModel.BookName;
+            var returnModel = libraryService.GetAllBooks(userId,
+               model.BookName, model.Author, model.GenreId, model.SortMethodId, 1, model.CountBooksOfPage);
 
+            return View("AllBooks", returnModel);
+
+
+            /*var author = bookModel.Author==null? "null": bookModel.Author;
+            var bookName = bookModel.BookName == null ? "null" : bookModel.BookName;
+            var model = new GiveBookViewModel()
+            {
+                AllBooks = bookModel,
+                AllUsers = allUsers,
+            };
             ViewData["message"] = $"HttpPost   {bookName} {author}";
             
             var resultModel = this.libraryService.
                GetGiveBookInformationSearchBook(userId, model);
-            return View(resultModel);
+            return View(resultModel);*/
         }
     }
 }

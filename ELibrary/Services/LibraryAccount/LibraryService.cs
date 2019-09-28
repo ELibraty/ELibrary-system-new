@@ -267,7 +267,11 @@ namespace ELibrary.Services.LibraryAccount
             allBooks.BookName = modelBook.BookName == null ? "Null" : modelBook.BookName;
 
             var allUsers = new AllUsersViewModel();// model.AllUsers;
-            var returnModel = new GiveBookViewModel(allBooks, allUsers);
+            var returnModel = new GiveBookViewModel()
+            {
+                AllBooks=allBooks
+            };
+
 
             return returnModel;
         }
